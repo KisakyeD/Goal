@@ -21,8 +21,6 @@
             --accent-green: #10b981;
             --accent-red: #ef4444;
             --accent-amber: #f59e0b;
-            --odds-bg: #262626;
-            --odds-border: #383838;
         }
 
         * {
@@ -195,39 +193,6 @@
             color: var(--accent-green);
         }
 
-        /* Odds Pills Row */
-        .odds-row {
-            display: flex;
-            gap: 8px;
-            margin-top: 10px;
-            border-top: 1px dashed var(--border-color);
-            padding-top: 8px;
-        }
-
-        .odds-pill {
-            flex: 1;
-            background-color: var(--odds-bg);
-            border: 1px solid var(--odds-border);
-            border-radius: 6px;
-            padding: 4px 8px;
-            text-align: center;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .odds-label {
-            font-size: 10px;
-            font-weight: 700;
-            color: var(--subtext-color);
-        }
-
-        .odds-val {
-            font-size: 12px;
-            font-weight: 800;
-            color: var(--accent-green);
-        }
-
         /* Status Badges */
         .status-badge {
             display: inline-flex;
@@ -247,19 +212,12 @@
         .status-pending { background-color: rgba(245, 158, 11, 0.15); color: var(--accent-amber); border: 1px solid var(--accent-amber); }
 
         .pred-pick-row {
-            margin: 6px 0;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px dashed var(--border-color);
             font-weight: 700;
             font-size: 13px;
             color: var(--accent-green);
-        }
-
-        .pred-reason {
-            font-size: 11px;
-            color: var(--subtext-color);
-            border-top: 1px dashed var(--border-color);
-            padding-top: 6px;
-            margin-top: 6px;
-            line-height: 1.4;
         }
 
         /* Overlay */
@@ -454,7 +412,7 @@
 
                 if (data && data.events && data.events.length > 0) {
                     let html = "";
-                    data.events.slice(0, 20).forEach(evt => {
+                    data.events.slice(0, 25).forEach(evt => {
                         const comp = evt.competitions[0];
                         const home = comp.competitors.find(c => c.homeAway === 'home');
                         const away = comp.competitors.find(c => c.homeAway === 'away');
@@ -462,13 +420,6 @@
                         const homeName = home?.team?.displayName || "Home Team";
                         const awayName = away?.team?.displayName || "Away Team";
                         const leagueName = comp.league?.name || data.leagues[0]?.name || "Global Football";
-                        
-                        let hOdds = "1.85", dOdds = "3.40", aOdds = "3.90";
-                        if (comp.odds && comp.odds[0]) {
-                            hOdds = comp.odds[0].homeTeamOdds?.summary || hOdds;
-                            aOdds = comp.odds[0].awayTeamOdds?.summary || aOdds;
-                            dOdds = comp.odds[0].drawOdds?.summary || dOdds;
-                        }
 
                         const isFinished = evt.status?.type?.state === "post";
                         const homeScore = parseInt(home?.score || 0);
@@ -503,15 +454,7 @@
                                     <span>${awayName}</span>
                                     <span class="score-box">${away?.score !== undefined ? away.score : 0}</span>
                                 </div>
-                                <div class="pred-pick-row">Pick: Over 1.5 Goals @ 1.65</div>
-                                <div class="odds-row">
-                                    <div class="odds-pill"><span class="odds-label">1</span><span class="odds-val">${hOdds}</span></div>
-                                    <div class="odds-pill"><span class="odds-label">X</span><span class="odds-val">${dOdds}</span></div>
-                                    <div class="odds-pill"><span class="odds-label">2</span><span class="odds-val">${aOdds}</span></div>
-                                </div>
-                                <div class="pred-reason">
-                                    📊 <strong>Wins1 AI Analysis:</strong> Calculated using live market odds and 10-match xG ratio for ${homeName}.
-                                </div>
+                                <div class="pred-pick-row">Pick: Over 1.5 Goals</div>
                             </div>
                         `;
                     });
