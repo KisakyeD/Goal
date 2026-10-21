@@ -52,7 +52,7 @@
             padding-bottom: 20px;
         }
 
-        /* Top Navigation Bar */
+        /* Top Bar */
         .top-bar {
             display: flex;
             align-items: center;
@@ -97,7 +97,7 @@
             vertical-align: super;
         }
 
-        /* Homepage Calendar Bar */
+        /* Infinite Horizontal Calendar */
         .calendar-bar {
             display: flex;
             align-items: center;
@@ -106,6 +106,7 @@
             background-color: var(--bg-color);
             border-bottom: 1px solid var(--border-color);
             overflow-x: auto;
+            scroll-behavior: smooth;
             scrollbar-width: none;
             -ms-overflow-style: none;
         }
@@ -126,6 +127,7 @@
             border: 1px solid var(--border-color);
             cursor: pointer;
             user-select: none;
+            flex-shrink: 0;
         }
 
         .date-chip.active {
@@ -151,9 +153,10 @@
             font-weight: 800;
             color: var(--text-color);
             margin-top: 2px;
+            white-space: nowrap;
         }
 
-        /* Main Feed Container */
+        /* Feed Cards */
         .feed-container {
             padding: 16px;
         }
@@ -220,7 +223,7 @@
             color: var(--accent-green);
         }
 
-        /* Overlay */
+        /* Overlay & Drawer */
         .overlay {
             position: fixed;
             top: 0;
@@ -240,7 +243,6 @@
             visibility: visible;
         }
 
-        /* Side Menu Drawer */
         .side-menu {
             position: fixed;
             top: 0;
@@ -326,7 +328,7 @@
             <div style="width: 40px;"></div>
         </header>
 
-        <!-- Homepage Calendar Strip -->
+        <!-- Continuous Calendar Bar -->
         <div class="calendar-bar" id="homepageCalendar"></div>
 
         <!-- Main Feed Container -->
@@ -366,35 +368,47 @@
             return `${y}${m}${d}`;
         }
 
-        // Render Homepage Date Strip (-2 days to +4 days)
-        function renderCalendarStrip() {
+        // Generate continuous date range (-30 days to +30 days)
+        function renderContinuousCalendar() {
             let html = "";
-            for (let offset = -2; offset <= 4; offset++) {
+            const pastDays = 30;
+            const futureDays = 30;
+
+            for (let offset = -pastDays; offset <= futureDays; offset++) {
                 const date = new Date();
                 date.setDate(date.getDate() + offset);
 
                 let dayName = date.toLocaleDateString('en-US', { weekday: 'short' });
                 let dayNumber = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
-                if (offset === 0) dayName = "Today";
-                else if (offset === -1) dayName = "Yest";
-                else if (offset === 1) dayName = "Tomm";
+                if (offset === 0) dayName = "TODAY";
+                else if (offset === -1) dayName = "YEST";
+                else if (offset === 1) dayName = "TOMM";
 
                 const isActive = offset === selectedDateOffset ? "active" : "";
+                const chipId = `date-chip-${offset}`;
 
                 html += `
-                    <div class="date-chip ${isActive}" onclick="selectDate(${offset})">
+                    <div class="date-chip ${isActive}" id="${chipId}" onclick="selectDate(${offset})">
                         <span class="day-name">${dayName}</span>
                         <span class="day-number">${dayNumber}</span>
                     </div>
                 `;
             }
             calendarBar.innerHTML = html;
+
+            // Auto-scroll to center on Today or selected chip
+            setTimeout(() => {
+                const activeChip = document.getElementById(`date-chip-${selectedDateOffset}`);
+                if (activeChip) {
+                    activeChip.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                }
+            }, 100);
         }
 
         function selectDate(offset) {
             selectedDateOffset = offset;
-            renderCalendarStrip();
+            renderContinuousCalendar();
             fetchMainAIPredictions(offset);
         }
 
@@ -482,7 +496,7 @@
         overlay.addEventListener('click', closeMenu);
 
         // App Start
-        renderCalendarStrip();
+        renderContinuousCalendar();
         fetchMainAIPredictions(0);
     </script>
 </body>
