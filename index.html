@@ -518,18 +518,37 @@
             margin-bottom: 10px;
         }
 
+        /* Status Badge Base Styling */
         .status-badge {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border-radius: 12px;
             font-size: 10px;
             font-weight: 800;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
+            user-select: none;
         }
 
-        .status-win { background-color: rgba(16, 185, 129, 0.2); color: var(--accent-green); border: 1px solid var(--accent-green); }
-        .status-loss { background-color: rgba(239, 68, 68, 0.2); color: var(--accent-red); border: 1px solid var(--accent-red); }
-        .status-pending { background-color: rgba(245, 158, 11, 0.2); color: var(--accent-amber); border: 1px solid var(--accent-amber); }
+        .status-win {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+            border: 1px solid var(--accent-green);
+        }
+
+        .status-loss {
+            background-color: rgba(239, 68, 68, 0.15);
+            color: var(--accent-red);
+            border: 1px solid var(--accent-red);
+        }
+
+        .status-pending {
+            background-color: rgba(245, 158, 11, 0.15);
+            color: var(--accent-amber);
+            border: 1px solid var(--accent-amber);
+        }
 
         .pred-pick-row {
             margin: 6px 0;
@@ -583,7 +602,7 @@
             <input type="text" class="search-input" id="searchInput" placeholder="Search team or league..." />
         </div>
 
-        <!-- Sports Bar -->
+        <!-- Sports Category Navigation -->
         <nav class="sports-nav">
             <button class="sport-chip active" data-sport="Soccer">Soccer</button>
             <button class="sport-chip" data-sport="Basketball">Basketball</button>
@@ -659,7 +678,7 @@
         </div>
     </div>
 
-    <!-- JavaScript Execution Engine -->
+    <!-- JavaScript Core -->
     <script>
         const menuToggle = document.getElementById('menuToggle');
         const menuClose = document.getElementById('menuClose');
@@ -883,18 +902,23 @@
 
                         let isWin = totalGoals >= 2;
                         let badgeClass = "status-pending";
-                        let badgeText = "⌛ PENDING";
+                        let badgeHtml = `⌛ PENDING`;
 
                         if (isFinished) {
-                            badgeClass = isWin ? "status-win" : "status-loss";
-                            badgeText = isWin ? "✓ WIN" : "✕ LOSS";
+                            if (isWin) {
+                                badgeClass = "status-win";
+                                badgeHtml = `✓ WIN`;
+                            } else {
+                                badgeClass = "status-loss";
+                                badgeHtml = `✕ LOSS`;
+                            }
                         }
 
                         return `
                             <div class="prediction-card">
                                 <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:700; color:var(--subtext-color);">
                                     <span>${leagueName}</span>
-                                    <span class="status-badge ${badgeClass}">${badgeText}</span>
+                                    <span class="status-badge ${badgeClass}">${badgeHtml}</span>
                                 </div>
                                 <div style="font-weight:700; margin:6px 0; color:var(--text-color); font-size:14px;">
                                     ${homeName} vs ${awayName}
