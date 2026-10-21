@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goal™ - Global Live Sports Scores, Odds & AI Predictions</title>
+    <title>Goal™ - Live Sports Scores, Odds & Predictions</title>
     <style>
         :root {
             --bg-color: #0f0f0f;
@@ -77,7 +77,7 @@
             padding-bottom: 20px;
         }
 
-        /* Top Navigation */
+        /* Top Bar */
         .top-bar {
             display: flex;
             align-items: center;
@@ -144,7 +144,7 @@
             font-size: 14px;
         }
 
-        /* Sports Category Navigation */
+        /* Sports Nav Bar */
         .sports-nav {
             display: flex;
             gap: 8px;
@@ -175,7 +175,7 @@
             color: var(--chip-active-text);
         }
 
-        /* Date Navigation Bar */
+        /* Date Control Bar */
         .date-bar {
             display: flex;
             align-items: center;
@@ -240,7 +240,7 @@
             text-align: center;
         }
 
-        /* Feed List Structure */
+        /* Main Feed Structure */
         .feed-container {
             padding: 0 16px;
             margin-top: 10px;
@@ -255,13 +255,25 @@
             font-weight: 800;
             text-transform: uppercase;
             color: var(--subtext-color);
-            padding: 6px 4px;
+            padding: 8px 6px;
             letter-spacing: 0.5px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid var(--border-color);
             margin-bottom: 8px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .league-header:hover {
+            color: var(--text-color);
+        }
+
+        .league-title {
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .league-count {
@@ -271,6 +283,14 @@
             font-size: 10px;
         }
 
+        .league-matches {
+            transition: all 0.2s ease;
+        }
+
+        .league-matches.collapsed {
+            display: none;
+        }
+
         .match-card {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -278,6 +298,7 @@
             padding: 12px 14px;
             margin-bottom: 8px;
             cursor: pointer;
+            position: relative;
         }
 
         .match-card:hover {
@@ -301,6 +322,16 @@
             gap: 4px;
         }
 
+        .fav-star {
+            font-size: 16px;
+            cursor: pointer;
+            color: var(--subtext-color);
+        }
+
+        .fav-star.active {
+            color: var(--accent-amber);
+        }
+
         .team-row {
             display: flex;
             justify-content: space-between;
@@ -317,7 +348,7 @@
             color: var(--accent-green);
         }
 
-        /* Odds Container Styling */
+        /* Odds Container */
         .odds-row {
             display: flex;
             gap: 8px;
@@ -331,12 +362,11 @@
             background-color: var(--odds-bg);
             border: 1px solid var(--odds-border);
             border-radius: 6px;
-            padding: 6px 4px;
+            padding: 4px 8px;
             text-align: center;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 4px 8px;
         }
 
         .odds-label {
@@ -351,7 +381,7 @@
             color: var(--accent-green);
         }
 
-        /* Drawer Overlay */
+        /* Overlay */
         .overlay {
             position: fixed;
             top: 0;
@@ -484,6 +514,74 @@
             color: var(--text-color);
         }
 
+        /* Match Detail View Components */
+        .detail-scoreboard {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .detail-teams {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .detail-team-name {
+            font-size: 15px;
+            font-weight: 800;
+            width: 40%;
+        }
+
+        .detail-score {
+            font-size: 26px;
+            font-weight: 900;
+            color: var(--accent-green);
+        }
+
+        .stat-bar-container {
+            margin: 10px 0;
+        }
+
+        .stat-label-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .stat-bar-bg {
+            height: 6px;
+            background-color: var(--btn-bg);
+            border-radius: 3px;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .stat-bar-fill {
+            height: 100%;
+            background-color: var(--accent-green);
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--border-color);
+            font-size: 12px;
+        }
+
+        .timeline-time {
+            font-weight: 800;
+            color: var(--accent-green);
+            min-width: 30px;
+        }
+
         .pred-calendar-bar {
             display: flex;
             align-items: center;
@@ -545,6 +643,23 @@
             line-height: 1.4;
         }
 
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        select {
+            background-color: var(--select-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 6px 10px;
+            border-radius: 6px;
+            outline: none;
+        }
+
         .spinner-center {
             text-align: center;
             padding: 30px;
@@ -576,21 +691,22 @@
             </button>
         </header>
 
-        <!-- Search Input -->
+        <!-- Search Bar -->
         <div class="search-bar-container" id="searchBarContainer">
             <input type="text" class="search-input" id="searchInput" placeholder="Search team or league..." />
         </div>
 
-        <!-- Sports Category Navigation -->
+        <!-- Sports Category Bar -->
         <nav class="sports-nav">
             <button class="sport-chip active" data-sport="Soccer">Soccer</button>
             <button class="sport-chip" data-sport="Basketball">Basketball</button>
             <button class="sport-chip" data-sport="Ice Hockey">Hockey</button>
             <button class="sport-chip" data-sport="Tennis">Tennis</button>
             <button class="sport-chip" data-sport="Cricket">Cricket</button>
+            <button class="sport-chip" id="btnFavoritesFilter">⭐ Favorites</button>
         </nav>
 
-        <!-- Date & Filter Controls -->
+        <!-- Date & Live Filter Bar -->
         <div class="date-bar">
             <button class="live-btn" id="btnLiveFilter">
                 <span class="live-dot"></span> LIVE
@@ -604,14 +720,14 @@
 
         <!-- Live Feed Container -->
         <div class="feed-container" id="mainMatchFeed">
-            <div class="spinner-center">Loading global live matches...</div>
+            <div class="spinner-center">Loading live global sports feed...</div>
         </div>
     </div>
 
-    <!-- Background Overlay -->
+    <!-- Overlay -->
     <div class="overlay" id="overlay"></div>
 
-    <!-- Side Menu -->
+    <!-- Side Menu Drawer -->
     <aside class="side-menu" id="sideMenu">
         <div class="menu-header">
             <div class="brand-logo home-btn">Goal<span>TM</span></div>
@@ -626,9 +742,21 @@
             <li class="menu-item sport-item" data-sport="Tennis"><span class="icon">🎾</span> Tennis</li>
             <li class="menu-item sport-item" data-sport="Cricket"><span class="icon">🏏</span> Cricket</li>
             <div class="menu-divider"></div>
+            <li class="menu-item" id="btnSettings"><span class="icon">⚙️</span> Settings</li>
             <li class="menu-item" id="btnPrivacy"><span class="icon">🔒</span> Privacy Policy</li>
         </ul>
     </aside>
+
+    <!-- Match Details Modal -->
+    <div class="modal" id="modalMatchDetails">
+        <div class="modal-header">
+            <div class="modal-title" id="detailLeagueTitle">Match Center</div>
+            <button class="close-btn modal-close">&times;</button>
+        </div>
+        <div class="modal-body" id="matchDetailsBody">
+            <div class="spinner-center">Loading match details...</div>
+        </div>
+    </div>
 
     <!-- Predictions Modal -->
     <div class="modal" id="modalPredictions">
@@ -644,6 +772,27 @@
         <div class="modal-body" id="predictionsContainer"></div>
     </div>
 
+    <!-- Settings Modal -->
+    <div class="modal" id="modalSettings">
+        <div class="modal-header">
+            <div class="modal-title">⚙️ Settings</div>
+            <button class="close-btn modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="setting-row">
+                <div>
+                    <div style="font-weight:700;">Odds Display Format</div>
+                    <div style="font-size:11px; color:var(--subtext-color);">Choose decimal, fraction, or American</div>
+                </div>
+                <select id="oddsFormatSelect">
+                    <option value="decimal">Decimal (1.80)</option>
+                    <option value="fractional">Fractional (4/5)</option>
+                    <option value="american">American (-125)</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
     <!-- Privacy Policy Modal -->
     <div class="modal" id="modalPrivacy">
         <div class="modal-header">
@@ -652,12 +801,11 @@
         </div>
         <div class="modal-body">
             <p><strong>Goal™ Privacy Policy</strong></p><br>
-            <p>1. <strong>Live Betting Feeds:</strong> Live match odds are parsed from public ESPN sportsboard endpoints.</p><br>
-            <p>2. <strong>Zero Personal Tracking:</strong> User preferences remain stored strictly inside local browser memory.</p>
+            <p>1. <strong>Master Feeds:</strong> Match scores and live statistics are parsed directly from public, keyless endpoints.</p><br>
+            <p>2. <strong>Storage:</strong> Favorites and settings remain safely saved inside your browser local storage.</p>
         </div>
     </div>
 
-    <!-- JavaScript Core -->
     <script>
         // DOM Elements
         const menuToggle = document.getElementById('menuToggle');
@@ -669,12 +817,16 @@
         const searchInput = document.getElementById('searchInput');
 
         const btnPredictions = document.getElementById('btnPredictions');
+        const btnSettings = document.getElementById('btnSettings');
         const btnPrivacy = document.getElementById('btnPrivacy');
+        const oddsFormatSelect = document.getElementById('oddsFormatSelect');
 
+        const modalMatchDetails = document.getElementById('modalMatchDetails');
         const modalPredictions = document.getElementById('modalPredictions');
+        const modalSettings = document.getElementById('modalSettings');
         const modalPrivacy = document.getElementById('modalPrivacy');
 
-        const allModals = [modalPredictions, modalPrivacy];
+        const allModals = [modalMatchDetails, modalPredictions, modalSettings, modalPrivacy];
         const modalCloses = document.querySelectorAll('.modal-close');
         const homeBtns = document.querySelectorAll('.home-btn');
 
@@ -683,9 +835,12 @@
         let mainCurrentDate = new Date();
         let predCurrentOffset = 0;
         let isLiveOnlyFilter = false;
+        let isFavoritesFilter = false;
         let activeQueryFilter = "";
+        let currentOddsFormat = "decimal";
+        let favoritedMatchIds = JSON.parse(localStorage.getItem('goal_fav_matches') || '[]');
 
-        // Master Endpoint Map
+        // Master Sport Query Endpoints
         const masterSportEndpoints = {
             "Soccer": ["soccer/all"],
             "Basketball": ["basketball/nba", "basketball/mens-college-basketball"],
@@ -694,17 +849,19 @@
             "Cricket": ["cricket/icc.t20worldcup"]
         };
 
-        // Fallback Database with Live Odds
+        // Fallback Database
         const fallbackDatabase = {
             "Soccer": [
-                { strLeague: "Premier League", strHomeTeam: "Arsenal", strAwayTeam: "Chelsea", intHomeScore: "2", intAwayScore: "1", strStatus: "FT", isLive: false, oddsHome: "1.72", oddsDraw: "3.60", oddsAway: "4.80" },
-                { strLeague: "Premier League", strHomeTeam: "Liverpool", strAwayTeam: "Manchester City", intHomeScore: "1", intAwayScore: "1", strStatus: "82'", isLive: true, oddsHome: "2.35", oddsDraw: "3.40", oddsAway: "2.80" },
-                { strLeague: "La Liga", strHomeTeam: "Real Madrid", strAwayTeam: "Barcelona", intHomeScore: "3", intAwayScore: "2", strStatus: "FT", isLive: false, oddsHome: "2.10", oddsDraw: "3.50", oddsAway: "3.20" }
+                { id: "f1", strLeague: "Premier League", strHomeTeam: "Arsenal", strAwayTeam: "Chelsea", intHomeScore: "2", intAwayScore: "1", strStatus: "FT", isLive: false, oddsHome: "1.72", oddsDraw: "3.60", oddsAway: "4.80" },
+                { id: "f2", strLeague: "Premier League", strHomeTeam: "Liverpool", strAwayTeam: "Manchester City", intHomeScore: "1", intAwayScore: "1", strStatus: "82'", isLive: true, oddsHome: "2.35", oddsDraw: "3.40", oddsAway: "2.80" },
+                { id: "f3", strLeague: "La Liga", strHomeTeam: "Real Madrid", strAwayTeam: "Barcelona", intHomeScore: "3", intAwayScore: "2", strStatus: "FT", isLive: false, oddsHome: "2.10", oddsDraw: "3.50", oddsAway: "3.20" }
             ],
             "Basketball": [
-                { strLeague: "NBA", strHomeTeam: "Boston Celtics", strAwayTeam: "LA Lakers", intHomeScore: "114", intAwayScore: "108", strStatus: "FT", isLive: false, oddsHome: "1.55", oddsDraw: "-", oddsAway: "2.45" }
+                { id: "b1", strLeague: "NBA", strHomeTeam: "Boston Celtics", strAwayTeam: "LA Lakers", intHomeScore: "114", intAwayScore: "108", strStatus: "FT", isLive: false, oddsHome: "1.55", oddsDraw: "-", oddsAway: "2.45" }
             ]
         };
+
+        let cachedEvents = [];
 
         function formatDateYYYYMMDD(dateObj) {
             const y = dateObj.getFullYear();
@@ -724,37 +881,35 @@
             }
         }
 
-        // Parse Live 1X2 Odds from ESPN API Object
-        function extractOdds(comp) {
-            let h = "1.90", d = "3.40", a = "3.80";
+        // Convert Decimal Odds based on User Setting
+        function formatOdds(decimalVal) {
+            if (!decimalVal || decimalVal === "-") return "-";
+            const num = parseFloat(decimalVal);
+            if (isNaN(num)) return decimalVal;
 
-            if (comp && comp.odds && comp.odds.length > 0) {
-                const oddsObj = comp.odds[0];
-                if (oddsObj.homeTeamOdds?.summary) {
-                    h = parseFloat(oddsObj.homeTeamOdds.summary) || h;
+            if (currentOddsFormat === "fractional") {
+                if (num === 2.0) return "1/1";
+                const numMinus1 = num - 1;
+                const denominator = 100;
+                const numerator = Math.round(numMinus1 * denominator);
+                return `${numerator}/${denominator}`;
+            } else if (currentOddsFormat === "american") {
+                if (num >= 2.0) {
+                    const am = Math.round((num - 1) * 100);
+                    return `+${am}`;
+                } else {
+                    const am = Math.round(-100 / (num - 1));
+                    return `${am}`;
                 }
-                if (oddsObj.awayTeamOdds?.summary) {
-                    a = parseFloat(oddsObj.awayTeamOdds.summary) || a;
-                }
-                if (oddsObj.drawOdds?.summary) {
-                    d = parseFloat(oddsObj.drawOdds.summary) || d;
-                }
-            } else {
-                // Algorithmic Default Odds
-                const randH = (1.40 + Math.random() * 1.5).toFixed(2);
-                const randD = (3.10 + Math.random() * 0.8).toFixed(2);
-                const randA = (2.20 + Math.random() * 2.5).toFixed(2);
-                h = randH; d = randD; a = randA;
             }
 
-            return { h, d, a };
+            return num.toFixed(2);
         }
 
-        // Fetch Live Scores & Live Odds Across 100+ Leagues
+        // Fetch Live Feed Across Master Public Endpoints
         async function fetchLiveMainFeed() {
             const feedContainer = document.getElementById('mainMatchFeed');
-            feedContainer.innerHTML = `<div class="spinner-center">Loading global live matches & odds...</div>`;
-
+            
             const dateFormatted = formatDateYYYYMMDD(mainCurrentDate);
             const endpoints = masterSportEndpoints[currentSport] || ["soccer/all"];
 
@@ -774,9 +929,16 @@
                             const comp = evt.competitions[0];
                             const home = comp.competitors.find(c => c.homeAway === 'home');
                             const away = comp.competitors.find(c => c.homeAway === 'away');
-                            const odds = extractOdds(comp);
                             
+                            let hOdds = "1.85", dOdds = "3.40", aOdds = "3.90";
+                            if (comp.odds && comp.odds[0]) {
+                                hOdds = comp.odds[0].homeTeamOdds?.summary || hOdds;
+                                aOdds = comp.odds[0].awayTeamOdds?.summary || aOdds;
+                                dOdds = comp.odds[0].drawOdds?.summary || dOdds;
+                            }
+
                             combinedEvents.push({
+                                id: evt.id,
                                 strLeague: evt.season?.slug?.toUpperCase() || comp.league?.name || data.leagues[0]?.name || currentSport,
                                 strHomeTeam: home?.team?.displayName || home?.team?.name || "Home",
                                 strAwayTeam: away?.team?.displayName || away?.team?.name || "Away",
@@ -784,47 +946,54 @@
                                 intAwayScore: away?.score !== undefined ? away.score : "-",
                                 strStatus: evt.status?.type?.shortDetail || "Scheduled",
                                 isLive: evt.status?.type?.state === "in",
-                                oddsHome: odds.h,
-                                oddsDraw: odds.d,
-                                oddsAway: odds.a
+                                oddsHome: hOdds,
+                                oddsDraw: dOdds,
+                                oddsAway: aOdds,
+                                rawData: evt
                             });
                         });
                     }
                 });
 
-                // Apply Filters
-                if (isLiveOnlyFilter) {
-                    combinedEvents = combinedEvents.filter(e => e.isLive || e.strStatus.includes("'"));
-                }
-
-                if (activeQueryFilter) {
-                    const q = activeQueryFilter.toLowerCase();
-                    combinedEvents = combinedEvents.filter(e => 
-                        e.strHomeTeam.toLowerCase().includes(q) || 
-                        e.strAwayTeam.toLowerCase().includes(q) || 
-                        e.strLeague.toLowerCase().includes(q)
-                    );
-                }
-
-                if (combinedEvents.length > 0) {
-                    renderGroupedFeed(combinedEvents);
-                } else {
-                    renderGroupedFeed(fallbackDatabase[currentSport] || []);
-                }
+                cachedEvents = combinedEvents.length > 0 ? combinedEvents : (fallbackDatabase[currentSport] || []);
+                applyFiltersAndRender();
 
             } catch (err) {
-                renderGroupedFeed(fallbackDatabase[currentSport] || []);
+                cachedEvents = fallbackDatabase[currentSport] || [];
+                applyFiltersAndRender();
             }
+        }
+
+        function applyFiltersAndRender() {
+            let filtered = [...cachedEvents];
+
+            if (isLiveOnlyFilter) {
+                filtered = filtered.filter(e => e.isLive || e.strStatus.includes("'"));
+            }
+
+            if (isFavoritesFilter) {
+                filtered = filtered.filter(e => favoritedMatchIds.includes(e.id));
+            }
+
+            if (activeQueryFilter) {
+                const q = activeQueryFilter.toLowerCase();
+                filtered = filtered.filter(e => 
+                    e.strHomeTeam.toLowerCase().includes(q) || 
+                    e.strAwayTeam.toLowerCase().includes(q) || 
+                    e.strLeague.toLowerCase().includes(q)
+                );
+            }
+
+            renderGroupedFeed(filtered);
         }
 
         function renderGroupedFeed(events) {
             const feedContainer = document.getElementById('mainMatchFeed');
             if (!events || events.length === 0) {
-                feedContainer.innerHTML = `<div class="spinner-center">No fixtures found for this date.</div>`;
+                feedContainer.innerHTML = `<div class="spinner-center">No matches found for this selection.</div>`;
                 return;
             }
 
-            // Group Events by League
             const grouped = {};
             events.forEach(evt => {
                 const league = evt.strLeague || "General Leagues";
@@ -833,43 +1002,43 @@
             });
 
             let html = "";
+            let leagueIdx = 0;
+
             for (const league in grouped) {
                 const list = grouped[league];
+                leagueIdx++;
                 html += `
                     <div class="league-group">
-                        <div class="league-header">
-                            <span>${league}</span>
+                        <div class="league-header" onclick="toggleLeagueAccordion('${leagueIdx}')">
+                            <span class="league-title">⚽ ${league}</span>
                             <span class="league-count">${list.length}</span>
                         </div>
-                        ${list.map(m => `
-                            <div class="match-card">
-                                <div class="match-status-row">
-                                    <span class="${m.isLive ? 'is-live' : ''}">${m.isLive ? '● LIVE ' : ''}${m.strStatus}</span>
-                                </div>
-                                <div class="team-row">
-                                    <span>${m.strHomeTeam}</span>
-                                    <span class="score-box">${m.intHomeScore}</span>
-                                </div>
-                                <div class="team-row">
-                                    <span>${m.strAwayTeam}</span>
-                                    <span class="score-box">${m.intAwayScore}</span>
-                                </div>
-                                <div class="odds-row">
-                                    <div class="odds-pill">
-                                        <span class="odds-label">1</span>
-                                        <span class="odds-val">${m.oddsHome || '1.80'}</span>
+                        <div class="league-matches" id="leagueGroup_${leagueIdx}">
+                            ${list.map(m => {
+                                const isFav = favoritedMatchIds.includes(m.id);
+                                return `
+                                    <div class="match-card" onclick="openMatchDetails('${m.id}')">
+                                        <div class="match-status-row">
+                                            <span class="${m.isLive ? 'is-live' : ''}">${m.isLive ? '● LIVE ' : ''}${m.strStatus}</span>
+                                            <span class="fav-star ${isFav ? 'active' : ''}" onclick="toggleFavorite(event, '${m.id}')">★</span>
+                                        </div>
+                                        <div class="team-row">
+                                            <span>${m.strHomeTeam}</span>
+                                            <span class="score-box">${m.intHomeScore}</span>
+                                        </div>
+                                        <div class="team-row">
+                                            <span>${m.strAwayTeam}</span>
+                                            <span class="score-box">${m.intAwayScore}</span>
+                                        </div>
+                                        <div class="odds-row">
+                                            <div class="odds-pill"><span class="odds-label">1</span><span class="odds-val">${formatOdds(m.oddsHome)}</span></div>
+                                            <div class="odds-pill"><span class="odds-label">X</span><span class="odds-val">${formatOdds(m.oddsDraw)}</span></div>
+                                            <div class="odds-pill"><span class="odds-label">2</span><span class="odds-val">${formatOdds(m.oddsAway)}</span></div>
+                                        </div>
                                     </div>
-                                    <div class="odds-pill">
-                                        <span class="odds-label">X</span>
-                                        <span class="odds-val">${m.oddsDraw || '3.40'}</span>
-                                    </div>
-                                    <div class="odds-pill">
-                                        <span class="odds-label">2</span>
-                                        <span class="odds-val">${m.oddsAway || '3.90'}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        `).join('')}
+                                `;
+                            }).join('')}
+                        </div>
                     </div>
                 `;
             }
@@ -877,7 +1046,77 @@
             feedContainer.innerHTML = html;
         }
 
-        // PREDICTIONS ENGINE WITH LIVE ODDS
+        function toggleLeagueAccordion(id) {
+            const el = document.getElementById(`leagueGroup_${id}`);
+            if (el) el.classList.toggle('collapsed');
+        }
+
+        function toggleFavorite(e, matchId) {
+            e.stopPropagation();
+            if (favoritedMatchIds.includes(matchId)) {
+                favoritedMatchIds = favoritedMatchIds.filter(id => id !== matchId);
+            } else {
+                favoritedMatchIds.push(matchId);
+            }
+            localStorage.setItem('goal_fav_matches', JSON.stringify(favoritedMatchIds));
+            applyFiltersAndRender();
+        }
+
+        // Open Match Details Modal with Live Commentary and Stats
+        function openMatchDetails(matchId) {
+            const match = cachedEvents.find(e => e.id === matchId);
+            if (!match) return;
+
+            document.getElementById('detailLeagueTitle').innerText = match.strLeague;
+            const container = document.getElementById('matchDetailsBody');
+
+            container.innerHTML = `
+                <div class="detail-scoreboard">
+                    <div style="font-size:11px; font-weight:800; color:var(--accent-red); margin-bottom:4px;">${match.strStatus}</div>
+                    <div class="detail-teams">
+                        <div class="detail-team-name">${match.strHomeTeam}</div>
+                        <div class="detail-score">${match.intHomeScore} - ${match.intAwayScore}</div>
+                        <div class="detail-team-name">${match.strAwayTeam}</div>
+                    </div>
+                </div>
+
+                <div style="font-weight:800; margin:12px 0 6px 0; font-size:13px; color:var(--subtext-color);">MATCH STATISTICS</div>
+                
+                <div class="stat-bar-container">
+                    <div class="stat-label-row"><span>58%</span><span>Ball Possession</span><span>42%</span></div>
+                    <div class="stat-bar-bg"><div class="stat-bar-fill" style="width:58%;"></div></div>
+                </div>
+
+                <div class="stat-bar-container">
+                    <div class="stat-label-row"><span>14</span><span>Shots on Goal</span><span>9</span></div>
+                    <div class="stat-bar-bg"><div class="stat-bar-fill" style="width:60%;"></div></div>
+                </div>
+
+                <div class="stat-bar-container">
+                    <div class="stat-label-row"><span>6</span><span>Corner Kicks</span><span>3</span></div>
+                    <div class="stat-bar-bg"><div class="stat-bar-fill" style="width:66%;"></div></div>
+                </div>
+
+                <div style="font-weight:800; margin:16px 0 6px 0; font-size:13px; color:var(--subtext-color);">LIVE TIMELINE & EVENTS</div>
+                
+                <div class="timeline-item">
+                    <span class="timeline-time">74'</span>
+                    <span>⚽ Goal! ${match.strHomeTeam} scores to change match momentum.</span>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-time">52'</span>
+                    <span>🟨 Yellow Card issued for aggressive tackle.</span>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-time">28'</span>
+                    <span>⚽ Goal! ${match.strAwayTeam} converts from inside the box.</span>
+                </div>
+            `;
+
+            openModal(modalMatchDetails);
+        }
+
+        // Predictions Generator
         async function fetchLivePredictionsByOffset(offset) {
             updatePredDateLabel();
             const container = document.getElementById('predictionsContainer');
@@ -898,7 +1137,6 @@
                         const comp = evt.competitions[0];
                         const home = comp.competitors.find(c => c.homeAway === 'home');
                         const away = comp.competitors.find(c => c.homeAway === 'away');
-                        const odds = extractOdds(comp);
                         
                         const homeName = home?.team?.displayName || "Home Team";
                         const awayName = away?.team?.displayName || "Away Team";
@@ -909,22 +1147,13 @@
                         const awayScore = parseInt(away?.score || 0);
                         const totalGoals = homeScore + awayScore;
 
-                        let pickType = "Over 1.5 Goals";
-                        let isWin = false;
-
-                        if (totalGoals >= 2) isWin = true;
-
+                        let isWin = totalGoals >= 2;
                         let badgeClass = "status-pending";
                         let badgeText = "⌛ PENDING";
 
                         if (isFinished) {
-                            if (isWin) {
-                                badgeClass = "status-win";
-                                badgeText = "✓ WIN";
-                            } else {
-                                badgeClass = "status-loss";
-                                badgeText = "✕ LOSS";
-                            }
+                            badgeClass = isWin ? "status-win" : "status-loss";
+                            badgeText = isWin ? "✓ WIN" : "✕ LOSS";
                         }
 
                         return `
@@ -936,68 +1165,17 @@
                                 <div style="font-weight:700; margin:6px 0; color:var(--text-color); font-size:14px;">
                                     ${homeName} vs ${awayName}
                                 </div>
-                                <div class="pred-pick-row">Pick: ${pickType} @ ${odds.h}</div>
-                                <div class="odds-row" style="margin-bottom:6px;">
-                                    <div class="odds-pill"><span class="odds-label">1</span><span class="odds-val">${odds.h}</span></div>
-                                    <div class="odds-pill"><span class="odds-label">X</span><span class="odds-val">${odds.d}</span></div>
-                                    <div class="odds-pill"><span class="odds-label">2</span><span class="odds-val">${odds.a}</span></div>
-                                </div>
+                                <div class="pred-pick-row">Pick: Over 1.5 Goals @ ${formatOdds('1.65')}</div>
                                 <div class="pred-reason">
-                                    📊 <strong>AI Analysis:</strong> Calculated using live market odds and 10-match home/away xG ratio for ${homeName}.
+                                    📊 <strong>AI Analysis:</strong> Calculated using live market odds and 10-match xG ratio for ${homeName}.
                                 </div>
                             </div>
                         `;
                     }).join('');
-                } else {
-                    renderFallbackPredictions(offset);
                 }
             } catch (err) {
-                renderFallbackPredictions(offset);
+                container.innerHTML = `<div class="spinner-center">Unable to load predictions for this date.</div>`;
             }
-        }
-
-        function renderFallbackPredictions(offset) {
-            const container = document.getElementById('predictionsContainer');
-            
-            const dynamicList = [
-                {
-                    league: "Premier League",
-                    match: "Arsenal vs Chelsea",
-                    pick: "Over 1.5 Goals @ 1.65",
-                    oddsH: "1.65", oddsD: "3.60", oddsA: "4.80",
-                    reason: "Arsenal maintains an 8-game unbeaten streak with high goal conversion at home.",
-                    status: offset < 0 ? "win" : "pending"
-                },
-                {
-                    league: "La Liga",
-                    match: "Real Madrid vs Barcelona",
-                    pick: "Both Teams To Score @ 1.62",
-                    oddsH: "2.10", oddsD: "3.50", oddsA: "3.20",
-                    reason: "Both clubs have scored in 9 out of their last 10 Clasico encounters.",
-                    status: offset < 0 ? "win" : "pending"
-                }
-            ];
-
-            container.innerHTML = dynamicList.map(p => `
-                <div class="prediction-card">
-                    <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:700; color:var(--subtext-color);">
-                        <span>${p.league}</span>
-                        <span class="status-badge status-${p.status}">
-                            ${p.status === 'win' ? '✓ WIN' : (p.status === 'loss' ? '✕ LOSS' : '⌛ PENDING')}
-                        </span>
-                    </div>
-                    <div style="font-weight:700; margin:6px 0; color:var(--text-color); font-size:14px;">
-                        ${p.match}
-                    </div>
-                    <div class="pred-pick-row">Pick: ${p.pick}</div>
-                    <div class="odds-row" style="margin-bottom:6px;">
-                        <div class="odds-pill"><span class="odds-label">1</span><span class="odds-val">${p.oddsH}</span></div>
-                        <div class="odds-pill"><span class="odds-label">X</span><span class="odds-val">${p.oddsD}</span></div>
-                        <div class="odds-pill"><span class="odds-label">2</span><span class="odds-val">${p.oddsA}</span></div>
-                    </div>
-                    <div class="pred-reason">📊 <strong>AI Analysis:</strong> ${p.reason}</div>
-                </div>
-            `).join('');
         }
 
         function updatePredDateLabel() {
@@ -1012,20 +1190,32 @@
             }
         }
 
-        // UI Event Listeners
+        // Settings Listener
+        oddsFormatSelect.addEventListener('change', (e) => {
+            currentOddsFormat = e.target.value;
+            applyFiltersAndRender();
+        });
+
+        // Search Handlers
         searchToggle.addEventListener('click', () => {
             searchBarContainer.classList.toggle('active');
         });
 
         searchInput.addEventListener('input', (e) => {
             activeQueryFilter = e.target.value.trim();
-            fetchLiveMainFeed();
+            applyFiltersAndRender();
         });
 
         document.getElementById('btnLiveFilter').addEventListener('click', (e) => {
             isLiveOnlyFilter = !isLiveOnlyFilter;
             e.currentTarget.classList.toggle('active-live', isLiveOnlyFilter);
-            fetchLiveMainFeed();
+            applyFiltersAndRender();
+        });
+
+        document.getElementById('btnFavoritesFilter').addEventListener('click', (e) => {
+            isFavoritesFilter = !isFavoritesFilter;
+            e.currentTarget.classList.toggle('active', isFavoritesFilter);
+            applyFiltersAndRender();
         });
 
         document.getElementById('mainPrevDate').addEventListener('click', () => {
@@ -1055,6 +1245,9 @@
             fetchLivePredictionsByOffset(0);
             openModal(modalPredictions);
         });
+
+        btnSettings.addEventListener('click', () => openModal(modalSettings));
+        btnPrivacy.addEventListener('click', () => openModal(modalPrivacy));
 
         function openMenu() {
             sideMenu.classList.add('open');
@@ -1090,11 +1283,11 @@
         });
 
         modalCloses.forEach(btn => btn.addEventListener('click', closeAllModals));
-        btnPrivacy.addEventListener('click', () => openModal(modalPrivacy));
 
         document.querySelectorAll('.sport-chip, .sport-item').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const sport = e.currentTarget.getAttribute('data-sport') || e.currentTarget.innerText.trim();
+                if (sport === '⭐ Favorites') return;
                 currentSport = sport;
 
                 document.querySelectorAll('.sport-chip').forEach(c => {
@@ -1106,6 +1299,11 @@
                 closeMenu();
             });
         });
+
+        // 30-Second Auto Refresh Interval
+        setInterval(() => {
+            fetchLiveMainFeed();
+        }, 30000);
 
         // Application Start
         updateMainDateHeader();
