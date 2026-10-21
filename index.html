@@ -113,7 +113,7 @@
             vertical-align: super;
         }
 
-        /* Sports Category Navigation */
+        /* Sports Nav Bar */
         .sports-nav {
             display: flex;
             gap: 10px;
@@ -809,7 +809,7 @@
         </div>
         <div class="modal-body">
             <p><strong>Goal Privacy Policy</strong></p><br>
-            <p>1. <strong>Live Data API:</strong> Match scores and schedules auto-update using secure endpoints and internal fallback feeds.</p><br>
+            <p>1. <strong>Free Public Endpoints:</strong> Scores and schedules are retrieved using open, keyless REST endpoints with zero user tracking.</p><br>
             <p>2. <strong>Data Storage:</strong> Settings & view history remain safely stored on your local browser.</p>
         </div>
     </div>
@@ -843,14 +843,14 @@
         let isLiveOnlyFilter = false;
 
         let recentItems = [
-            { title: "Soccer / Premier League Feed", time: "Just now" }
+            { title: "Soccer Feed View", time: "Just now" }
         ];
 
-        // Multi-Date Dynamic Predictions Map
+        // Multi-Date Dynamic Predictions Fallback
         const multiDatePredictionsMap = {
             "-1": [
                 { league: "UEFA Champions League", teams: "Arsenal vs Sevilla", pick: "Home Win & Over 1.5 Goals", odds: "1.65", status: "win", analysis: "Arsenal secured victory with 2 early goals." },
-                { league: "La Liga", teams: "Barcelona vs Sevilla", pick: "Over 2.5 Goals", odds: "1.82", status: "loss", analysis: "Match ended 1-1 after low conversion rate." }
+                { league: "La Liga", teams: "Barcelona vs Sevilla", pick: "Over 2.5 Goals", odds: "1.82", status: "loss", analysis: "Match ended 1-1 with lower conversion." }
             ],
             "0": [
                 { league: "UEFA Champions League", teams: "Arsenal vs Sevilla", pick: "Home Win & Over 1.5 Goals", odds: "1.65", status: "win", analysis: "Arsenal maintains an 8-game unbeaten home record with high xG statistics." },
@@ -863,7 +863,7 @@
             ]
         };
 
-        // Automatic Fallback Sports Data
+        // Fallback Sports Data
         const localMatchesFallback = {
             "Soccer": [
                 { strLeague: "Premier League", strHomeTeam: "Arsenal", strAwayTeam: "Chelsea", intHomeScore: "2", intAwayScore: "1", strStatus: "FT" },
@@ -938,14 +938,14 @@
             }).join('');
         }
 
-        // Fetch Live Matches with Key 3 in URL
+        // Fetch Matches Using Free Open Public API
         async function fetchLiveMainFeed() {
             const feedContainer = document.getElementById('mainMatchFeed');
             feedContainer.innerHTML = `<div class="spinner-center">Updating live scores...</div>`;
             
             const formattedDate = formatDateYYYYMMDD(mainCurrentDate);
-            // FIXED API URL: Included /3/ key segment
-            const apiUrl = `https://www.thesportsdb.com/api/v1/json/3/eventsday.php?d=${formattedDate}&s=${encodeURIComponent(currentSport)}`;
+            // Public CORS-Friendly Open API Endpoint
+            const apiUrl = `https://corsproxy.io/?${encodeURIComponent(`https://www.thesportsdb.com/api/v1/json/3/eventsday.php?d=${formattedDate}&s=${encodeURIComponent(currentSport)}`)}`;
 
             try {
                 const response = await fetch(apiUrl);
@@ -975,8 +975,7 @@
             targetDate.setDate(targetDate.getDate() + offset);
             const dateStr = formatDateYYYYMMDD(targetDate);
 
-            // FIXED API URL: Included /3/ key segment
-            const apiUrl = `https://www.thesportsdb.com/api/v1/json/3/eventsday.php?d=${dateStr}&s=Soccer`;
+            const apiUrl = `https://corsproxy.io/?${encodeURIComponent(`https://www.thesportsdb.com/api/v1/json/3/eventsday.php?d=${dateStr}&s=Soccer`)}`;
 
             try {
                 const response = await fetch(apiUrl);
