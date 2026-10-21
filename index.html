@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goal™ Header & Live Predictions</title>
+    <title>Goal™ - Live Sports Scores & Predictions</title>
     <style>
         :root {
             --bg-color: #0f0f0f;
@@ -65,7 +65,7 @@
 
         .container {
             width: 100%;
-            max-width: 600px;
+            max-width: 650px;
             background-color: var(--bg-color);
             min-height: 100vh;
             position: relative;
@@ -73,18 +73,22 @@
             padding-bottom: 20px;
         }
 
-        /* Top Bar */
+        /* Header Bar */
         .top-bar {
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 12px 16px;
             background-color: var(--bg-color);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .icon-btn {
-            width: 44px;
-            height: 44px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             background-color: var(--btn-bg);
             border: none;
@@ -96,7 +100,7 @@
         }
 
         .brand-logo {
-            font-size: 26px;
+            font-size: 24px;
             font-weight: 800;
             color: var(--text-color);
             letter-spacing: -0.5px;
@@ -113,11 +117,34 @@
             vertical-align: super;
         }
 
+        /* Search Drawer Bar */
+        .search-bar-container {
+            display: none;
+            padding: 8px 16px;
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .search-bar-container.active {
+            display: flex;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 14px;
+            background-color: var(--btn-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            color: var(--text-color);
+            outline: none;
+            font-size: 14px;
+        }
+
         /* Sports Nav Bar */
         .sports-nav {
             display: flex;
-            gap: 10px;
-            padding: 8px 16px;
+            gap: 8px;
+            padding: 10px 16px;
             overflow-x: auto;
             scrollbar-width: none;
             -ms-overflow-style: none;
@@ -128,11 +155,11 @@
         }
 
         .sport-chip {
-            padding: 10px 20px;
-            border-radius: 24px;
+            padding: 8px 18px;
+            border-radius: 20px;
             background-color: var(--card-bg);
             color: var(--text-muted);
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
             white-space: nowrap;
             border: none;
@@ -149,14 +176,14 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 12px 16px;
-            margin-top: 4px;
+            padding: 8px 16px;
+            margin-top: 2px;
         }
 
         .live-btn {
-            padding: 0 16px;
-            height: 44px;
-            border-radius: 22px;
+            padding: 0 14px;
+            height: 38px;
+            border-radius: 20px;
             background-color: var(--btn-bg);
             color: var(--text-color);
             font-size: 11px;
@@ -187,7 +214,7 @@
         .date-selector {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 14px;
         }
 
         .arrow-btn {
@@ -198,80 +225,74 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 8px;
+            padding: 6px;
         }
 
         .current-date {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
             color: var(--text-color);
+            min-width: 70px;
+            text-align: center;
         }
 
-        .calendar-btn {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background-color: var(--btn-bg);
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: var(--text-color);
-        }
-
-        .calendar-icon {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--text-color);
-            border-radius: 5px;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .calendar-icon::before {
-            content: '';
-            position: absolute;
-            top: -5px;
-            left: 2px;
-            width: 2px;
-            height: 4px;
-            background-color: var(--text-color);
-            border-radius: 1px;
-            box-shadow: 10px 0 0 var(--text-color);
-        }
-
-        .calendar-icon span {
-            font-size: 9px;
-            font-weight: 800;
-            margin-top: 2px;
-        }
-
-        /* Feed List */
+        /* Feed List Structure */
         .feed-container {
             padding: 0 16px;
-            margin-top: 12px;
+            margin-top: 10px;
+        }
+
+        .league-group {
+            margin-bottom: 16px;
+        }
+
+        .league-header {
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--subtext-color);
+            padding: 6px 4px;
+            letter-spacing: 0.5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .league-count {
+            background-color: var(--btn-bg);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 10px;
         }
 
         .match-card {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 14px 16px;
-            margin-bottom: 12px;
+            border-radius: 10px;
+            padding: 12px 14px;
+            margin-bottom: 8px;
+            cursor: pointer;
         }
 
-        .match-header-row {
+        .match-card:hover {
+            border-color: var(--subtext-color);
+        }
+
+        .match-status-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-size: 11px;
-            text-transform: uppercase;
+            font-weight: 800;
+            margin-bottom: 8px;
             color: var(--subtext-color);
-            font-weight: 700;
-            margin-bottom: 10px;
+        }
+
+        .match-status-row .is-live {
+            color: var(--accent-red);
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
         .team-row {
@@ -279,30 +300,30 @@
             justify-content: space-between;
             align-items: center;
             font-weight: 700;
-            font-size: 15px;
+            font-size: 14px;
             color: var(--text-color);
-            margin: 6px 0;
+            margin: 4px 0;
         }
 
         .score-box {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 800;
             color: var(--accent-green);
         }
 
-        /* Overlay */
+        /* Drawer Overlay */
         .overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.75);
             backdrop-filter: blur(4px);
             z-index: 100;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
         }
 
         .overlay.active {
@@ -310,7 +331,7 @@
             visibility: visible;
         }
 
-        /* Side Drawer Menu */
+        /* Drawer Menu */
         .side-menu {
             position: fixed;
             top: 0;
@@ -319,8 +340,7 @@
             height: 100%;
             background-color: var(--menu-bg);
             z-index: 101;
-            box-shadow: 4px 0 20px rgba(0,0,0,0.5);
-            transition: transform 0.3s ease-in-out;
+            transition: transform 0.25s ease-in-out;
             display: flex;
             flex-direction: column;
             overflow-y: auto;
@@ -334,7 +354,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 20px 16px;
+            padding: 16px;
             border-bottom: 1px solid var(--border-color);
         }
 
@@ -342,45 +362,39 @@
             background: none;
             border: none;
             color: var(--subtext-color);
-            font-size: 24px;
+            font-size: 22px;
             cursor: pointer;
-            padding: 4px 8px;
-            line-height: 1;
         }
 
         .menu-list {
             list-style: none;
-            padding: 12px 0;
-            margin: 0;
+            padding: 8px 0;
         }
 
         .menu-item {
             display: flex;
             align-items: center;
-            padding: 14px 20px;
+            padding: 12px 20px;
             color: var(--text-color);
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
         }
 
-        .menu-item:hover, .menu-item:active {
+        .menu-item:hover {
             background-color: var(--hover-bg);
         }
 
         .menu-item .icon {
-            margin-right: 14px;
+            margin-right: 12px;
             width: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 16px;
+            text-align: center;
         }
 
         .menu-divider {
             height: 1px;
             background-color: var(--border-color);
-            margin: 8px 0;
+            margin: 6px 0;
         }
 
         /* Modals */
@@ -388,18 +402,18 @@
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) scale(0.9);
+            transform: translate(-50%, -50%) scale(0.95);
             width: 92%;
             max-width: 480px;
             background-color: var(--modal-bg);
             border: 1px solid var(--modal-border);
-            border-radius: 16px;
-            padding: 20px;
+            border-radius: 14px;
+            padding: 18px;
             z-index: 200;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.25s ease-in-out;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
         }
 
         .modal.active {
@@ -413,25 +427,21 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid var(--border-color);
-            padding-bottom: 12px;
+            padding-bottom: 10px;
             margin-bottom: 12px;
         }
 
         .modal-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 8px;
             color: var(--text-color);
         }
 
         .modal-body {
             max-height: 65vh;
             overflow-y: auto;
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-color);
-            line-height: 1.5;
         }
 
         .pred-calendar-bar {
@@ -440,15 +450,14 @@
             justify-content: space-between;
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 8px 12px;
-            margin-bottom: 12px;
+            border-radius: 8px;
+            padding: 6px 12px;
+            margin-bottom: 10px;
         }
 
         .pred-date-label {
             font-weight: 700;
             font-size: 13px;
-            color: var(--text-color);
         }
 
         .pred-nav-btn {
@@ -456,169 +465,29 @@
             border: none;
             color: var(--text-color);
             cursor: pointer;
-            padding: 4px 8px;
             font-weight: 700;
-            font-size: 14px;
-        }
-
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        .status-win {
-            background-color: rgba(16, 185, 129, 0.15);
-            color: var(--accent-green);
-            border: 1px solid var(--accent-green);
-        }
-
-        .status-loss {
-            background-color: rgba(239, 68, 68, 0.15);
-            color: var(--accent-red);
-            border: 1px solid var(--accent-red);
-        }
-
-        .status-pending {
-            background-color: rgba(245, 158, 11, 0.15);
-            color: var(--accent-amber);
-            border: 1px solid var(--accent-amber);
         }
 
         .prediction-card {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 14px;
-            margin-bottom: 12px;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
         }
 
-        .pred-meta-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin: 8px 0;
-        }
-
-        .tip-badge {
-            font-weight: 700;
-            font-size: 13px;
-            color: var(--text-color);
-        }
-
-        .match-reason {
-            font-size: 12px;
-            color: var(--text-muted);
-            line-height: 1.4;
-            border-top: 1px dashed var(--border-color);
-            padding-top: 8px;
-            margin-top: 8px;
-        }
-
-        .setting-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .setting-label {
-            font-weight: 600;
-            color: var(--text-color);
-        }
-
-        .setting-sub {
-            font-size: 12px;
-            color: var(--subtext-color);
-            margin-top: 2px;
-        }
-
-        select {
-            background-color: var(--select-bg);
-            color: var(--text-color);
-            border: 1px solid var(--border-color);
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 13px;
-            outline: none;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .switch {
-            position: relative;
+        .status-badge {
             display: inline-block;
-            width: 44px;
-            height: 24px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
         }
 
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: var(--border-color);
-            transition: .3s;
-            border-radius: 24px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: .3s;
-            border-radius: 50%;
-        }
-
-        input:checked + .slider {
-            background-color: #2196F3;
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(20px);
-        }
-
-        .recent-list {
-            list-style: none;
-        }
-
-        .recent-item {
-            padding: 10px 12px;
-            background-color: var(--card-bg);
-            border-radius: 8px;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .clear-btn {
-            width: 100%;
-            padding: 10px;
-            margin-top: 12px;
-            background-color: #331212;
-            color: #ff5555;
-            border: 1px solid #552222;
-            border-radius: 8px;
-            font-weight: 700;
-            cursor: pointer;
-        }
+        .status-win { background-color: rgba(16, 185, 129, 0.2); color: var(--accent-green); }
+        .status-loss { background-color: rgba(239, 68, 68, 0.2); color: var(--accent-red); }
+        .status-pending { background-color: rgba(245, 158, 11, 0.2); color: var(--accent-amber); }
 
         .spinner-center {
             text-align: center;
@@ -631,10 +500,10 @@
 <body>
 
     <div class="container">
-        <!-- Top Header Bar -->
+        <!-- Top Navigation -->
         <header class="top-bar">
             <button class="icon-btn" id="menuToggle" aria-label="Open Menu">
-                <svg width="20" height="14" viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                <svg width="18" height="12" viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="2.5">
                     <line x1="0" y1="2" x2="20" y2="2" />
                     <line x1="0" y1="7" x2="20" y2="7" />
                     <line x1="0" y1="12" x2="20" y2="12" />
@@ -643,13 +512,18 @@
             <div class="brand-logo home-btn">
                 Goal<span>TM</span>
             </div>
-            <button class="icon-btn" aria-label="Search">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <button class="icon-btn" id="searchToggle" aria-label="Toggle Search">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <circle cx="11" cy="11" r="8"></circle>
                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
             </button>
         </header>
+
+        <!-- Search Drawer Input -->
+        <div class="search-bar-container" id="searchBarContainer">
+            <input type="text" class="search-input" id="searchInput" placeholder="Search team or league..." />
+        </div>
 
         <!-- Sports Category Navigation -->
         <nav class="sports-nav">
@@ -660,61 +534,42 @@
             <button class="sport-chip" data-sport="Cricket">Cricket</button>
         </nav>
 
-        <!-- Date & Live Bar -->
+        <!-- Date & Filter Controls -->
         <div class="date-bar">
             <button class="live-btn" id="btnLiveFilter">
                 <span class="live-dot"></span> LIVE
             </button>
             <div class="date-selector">
-                <button class="arrow-btn" id="mainPrevDate" aria-label="Previous Day">
-                    <svg width="10" height="16" viewBox="0 0 8 14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="7 1 1 7 7 13"></polyline>
-                    </svg>
-                </button>
+                <button class="arrow-btn" id="mainPrevDate" aria-label="Previous Day">◀</button>
                 <span class="current-date" id="mainDateDisplay">Today</span>
-                <button class="arrow-btn" id="mainNextDate" aria-label="Next Day">
-                    <svg width="10" height="16" viewBox="0 0 8 14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="1 1 7 7 1 13"></polyline>
-                    </svg>
-                </button>
+                <button class="arrow-btn" id="mainNextDate" aria-label="Next Day">▶</button>
             </div>
-            <button class="calendar-btn" aria-label="Select Date">
-                <div class="calendar-icon">
-                    <span id="calendarDayNum">--</span>
-                </div>
-            </button>
         </div>
 
-        <!-- Live Matches Feed Container -->
+        <!-- Live Feed Container -->
         <div class="feed-container" id="mainMatchFeed">
-            <div class="spinner-center">Loading live events...</div>
+            <div class="spinner-center">Loading live feeds across global leagues...</div>
         </div>
     </div>
 
-    <!-- Background Overlay -->
+    <!-- Overlay -->
     <div class="overlay" id="overlay"></div>
 
-    <!-- Side Drawer Menu -->
+    <!-- Drawer Menu -->
     <aside class="side-menu" id="sideMenu">
         <div class="menu-header">
-            <div class="brand-logo home-btn">
-                Goal<span>TM</span>
-            </div>
+            <div class="brand-logo home-btn">Goal<span>TM</span></div>
             <button class="close-btn" id="menuClose">&times;</button>
         </div>
         <ul class="menu-list">
             <li class="menu-item" id="btnPredictions"><span class="icon">🔮</span> Predictions</li>
-            <li class="menu-item"><span class="icon">👑</span> VIP 1</li>
-            <li class="menu-item"><span class="icon">👑</span> VIP 2</li>
             <div class="menu-divider"></div>
             <li class="menu-item sport-item" data-sport="Soccer"><span class="icon">⚽</span> Football</li>
-            <li class="menu-item sport-item" data-sport="Ice Hockey"><span class="icon">🏒</span> Hockey</li>
             <li class="menu-item sport-item" data-sport="Basketball"><span class="icon">🏀</span> Basketball</li>
+            <li class="menu-item sport-item" data-sport="Ice Hockey"><span class="icon">🏒</span> Hockey</li>
             <li class="menu-item sport-item" data-sport="Tennis"><span class="icon">🎾</span> Tennis</li>
             <li class="menu-item sport-item" data-sport="Cricket"><span class="icon">🏏</span> Cricket</li>
             <div class="menu-divider"></div>
-            <li class="menu-item" id="btnRecentlyViewed"><span class="icon">🕒</span> Recently Viewed</li>
-            <li class="menu-item" id="btnSetting"><span class="icon">⚙️</span> Setting</li>
             <li class="menu-item" id="btnPrivacy"><span class="icon">🔒</span> Privacy Policy</li>
         </ul>
     </aside>
@@ -725,80 +580,12 @@
             <div class="modal-title">🔮 Predictions Calendar</div>
             <button class="close-btn modal-close">&times;</button>
         </div>
-        
         <div class="pred-calendar-bar">
             <button class="pred-nav-btn" id="predPrevDate">◀</button>
             <div class="pred-date-label" id="predDateDisplay">Today</div>
             <button class="pred-nav-btn" id="predNextDate">▶</button>
         </div>
-
         <div class="modal-body" id="predictionsContainer"></div>
-    </div>
-
-    <!-- Recently Viewed Modal -->
-    <div class="modal" id="modalRecentlyViewed">
-        <div class="modal-header">
-            <div class="modal-title">🕒 Recently Viewed</div>
-            <button class="close-btn modal-close">&times;</button>
-        </div>
-        <div class="modal-body">
-            <ul class="recent-list" id="recentListContainer"></ul>
-            <button class="clear-btn" id="clearRecentBtn">Clear History</button>
-        </div>
-    </div>
-
-    <!-- Settings Modal -->
-    <div class="modal" id="modalSettings">
-        <div class="modal-header">
-            <div class="modal-title">⚙️ Settings</div>
-            <button class="close-btn modal-close">&times;</button>
-        </div>
-        <div class="modal-body">
-            <div class="setting-row">
-                <div>
-                    <div class="setting-label">Odds Format</div>
-                    <div class="setting-sub">Choose default odds display format</div>
-                </div>
-                <select id="oddsFormatSelect">
-                    <option value="decimal">Decimal (1.80)</option>
-                    <option value="fractional">Fractional (4/5)</option>
-                    <option value="american">American (-125)</option>
-                </select>
-            </div>
-
-            <div class="setting-row">
-                <div>
-                    <div class="setting-label">Push Notifications</div>
-                    <div class="setting-sub">Alerts for goals, cards, and match ends</div>
-                </div>
-                <label class="switch">
-                    <input type="checkbox" id="toggleNotifications" checked>
-                    <span class="slider"></span>
-                </label>
-            </div>
-
-            <div class="setting-row">
-                <div>
-                    <div class="setting-label">Sound Effects</div>
-                    <div class="setting-sub">Audio cues for live score updates</div>
-                </div>
-                <label class="switch">
-                    <input type="checkbox" id="toggleSounds" checked>
-                    <span class="slider"></span>
-                </label>
-            </div>
-
-            <div class="setting-row">
-                <div>
-                    <div class="setting-label">Theme Mode</div>
-                    <div class="setting-sub">Switch between Dark and White mode</div>
-                </div>
-                <select id="themeSelect">
-                    <option value="dark">Dark Theme 🌙</option>
-                    <option value="white">White Theme ☀️</option>
-                </select>
-            </div>
-        </div>
     </div>
 
     <!-- Privacy Policy Modal -->
@@ -808,82 +595,67 @@
             <button class="close-btn modal-close">&times;</button>
         </div>
         <div class="modal-body">
-            <p><strong>Goal Privacy Policy</strong></p><br>
-            <p>1. <strong>Free Public Endpoints:</strong> Scores and schedules are retrieved using open, keyless REST endpoints with zero user tracking.</p><br>
-            <p>2. <strong>Data Storage:</strong> Settings & view history remain safely stored on your local browser.</p>
+            <p><strong>Goal™ Privacy Policy</strong></p><br>
+            <p>1. <strong>Aggregated Sports Feeds:</strong> Live scores and fixtures are queried directly from keyless public endpoints.</p><br>
+            <p>2. <strong>Zero Personal Tracking:</strong> Your settings stay completely private in your browser's local cache.</p>
         </div>
     </div>
 
     <script>
-        // DOM References
+        // DOM Elements
         const menuToggle = document.getElementById('menuToggle');
         const menuClose = document.getElementById('menuClose');
         const sideMenu = document.getElementById('sideMenu');
         const overlay = document.getElementById('overlay');
+        const searchToggle = document.getElementById('searchToggle');
+        const searchBarContainer = document.getElementById('searchBarContainer');
+        const searchInput = document.getElementById('searchInput');
 
         const btnPredictions = document.getElementById('btnPredictions');
-        const btnRecentlyViewed = document.getElementById('btnRecentlyViewed');
-        const btnSetting = document.getElementById('btnSetting');
         const btnPrivacy = document.getElementById('btnPrivacy');
 
         const modalPredictions = document.getElementById('modalPredictions');
-        const modalRecentlyViewed = document.getElementById('modalRecentlyViewed');
-        const modalSettings = document.getElementById('modalSettings');
         const modalPrivacy = document.getElementById('modalPrivacy');
 
-        const allModals = [modalPredictions, modalRecentlyViewed, modalSettings, modalPrivacy];
+        const allModals = [modalPredictions, modalPrivacy];
         const modalCloses = document.querySelectorAll('.modal-close');
-        const themeSelect = document.getElementById('themeSelect');
         const homeBtns = document.querySelectorAll('.home-btn');
 
-        // App State
+        // State Tracking
         let currentSport = "Soccer";
         let mainCurrentDate = new Date();
         let predCurrentOffset = 0;
         let isLiveOnlyFilter = false;
+        let activeQueryFilter = "";
 
-        let recentItems = [
-            { title: "Soccer Feed View", time: "Just now" }
-        ];
-
-        // Multi-Date Dynamic Predictions Fallback
-        const multiDatePredictionsMap = {
-            "-1": [
-                { league: "UEFA Champions League", teams: "Arsenal vs Sevilla", pick: "Home Win & Over 1.5 Goals", odds: "1.65", status: "win", analysis: "Arsenal secured victory with 2 early goals." },
-                { league: "La Liga", teams: "Barcelona vs Sevilla", pick: "Over 2.5 Goals", odds: "1.82", status: "loss", analysis: "Match ended 1-1 with lower conversion." }
+        // Endpoint Maps for Parallel Fetching across Top Leagues
+        const espnLeagueEndpoints = {
+            "Soccer": [
+                "soccer/eng.1", "soccer/esp.1", "soccer/ita.1", 
+                "soccer/ger.1", "soccer/fra.1", "soccer/uefa.champions", "soccer/usa.1"
             ],
-            "0": [
-                { league: "UEFA Champions League", teams: "Arsenal vs Sevilla", pick: "Home Win & Over 1.5 Goals", odds: "1.65", status: "win", analysis: "Arsenal maintains an 8-game unbeaten home record with high xG statistics." },
-                { league: "Premier League", teams: "Manchester City vs Everton", pick: "Man City -1.5 Asian Handicap", odds: "1.72", status: "pending", analysis: "City dominates ball possession (68% average) against bottom-table sides." },
-                { league: "La Liga", teams: "Real Madrid vs Valencia", pick: "Both Teams To Score - NO", odds: "1.80", status: "pending", analysis: "Real Madrid has kept 5 consecutive home clean sheets this season." }
-            ],
-            "1": [
-                { league: "Serie A", teams: "Inter Milan vs Torino", pick: "Inter Milan Win & Over 2.5", odds: "1.88", status: "pending", analysis: "Inter averages 2.4 goals per game at home." },
-                { league: "Bundesliga", teams: "Bayern Munich vs Leipzig", pick: "Bayern Munich -1.5", odds: "1.60", status: "pending", analysis: "Bayern leads European leagues in home xG creation." }
-            ]
+            "Basketball": ["basketball/nba", "basketball/mens-college-basketball"],
+            "Ice Hockey": ["hockey/nhl"],
+            "Tennis": ["tennis/atp", "tennis/wta"],
+            "Cricket": ["cricket/icc.t20worldcup"]
         };
 
-        // Fallback Sports Data
-        const localMatchesFallback = {
+        // Fallback Database to Ensure Content
+        const fallbackDatabase = {
             "Soccer": [
                 { strLeague: "Premier League", strHomeTeam: "Arsenal", strAwayTeam: "Chelsea", intHomeScore: "2", intAwayScore: "1", strStatus: "FT" },
-                { strLeague: "UEFA Champions League", strHomeTeam: "Real Madrid", strAwayTeam: "Borussia Dortmund", intHomeScore: "3", intAwayScore: "2", strStatus: "FT" },
-                { strLeague: "La Liga", strHomeTeam: "Barcelona", strAwayTeam: "Sevilla", intHomeScore: "1", intAwayScore: "0", strStatus: "74'" },
-                { strLeague: "Serie A", strHomeTeam: "Inter Milan", strAwayTeam: "Juventus", intHomeScore: "2", intAwayScore: "2", strStatus: "62'" },
-                { strLeague: "Bundesliga", strHomeTeam: "Bayern Munich", strAwayTeam: "RB Leipzig", intHomeScore: "0", intAwayScore: "0", strStatus: "21:00" }
+                { strLeague: "Premier League", strHomeTeam: "Liverpool", strAwayTeam: "Manchester City", intHomeScore: "1", intAwayScore: "1", strStatus: "82'" },
+                { strLeague: "La Liga", strHomeTeam: "Real Madrid", strAwayTeam: "Barcelona", intHomeScore: "3", intAwayScore: "2", strStatus: "FT" },
+                { strLeague: "La Liga", strHomeTeam: "Atletico Madrid", strAwayTeam: "Sevilla", intHomeScore: "1", intAwayScore: "0", strStatus: "45'" },
+                { strLeague: "Serie A", strHomeTeam: "Inter Milan", strAwayTeam: "AC Milan", intHomeScore: "2", intAwayScore: "2", strStatus: "FT" },
+                { strLeague: "Bundesliga", strHomeTeam: "Bayern Munich", strAwayTeam: "Dortmund", intHomeScore: "4", intAwayScore: "1", strStatus: "FT" }
             ],
             "Basketball": [
-                { strLeague: "NBA", strHomeTeam: "LA Lakers", strAwayTeam: "Golden State Warriors", intHomeScore: "112", intAwayScore: "108", strStatus: "FT" },
-                { strLeague: "EuroLeague", strHomeTeam: "Real Madrid Baloncesto", strAwayTeam: "Monaco", intHomeScore: "84", intAwayScore: "79", strStatus: "Q4" }
+                { strLeague: "NBA", strHomeTeam: "Boston Celtics", strAwayTeam: "LA Lakers", intHomeScore: "114", intAwayScore: "108", strStatus: "FT" },
+                { strLeague: "NBA", strHomeTeam: "Golden State Warriors", strAwayTeam: "Phoenix Suns", intHomeScore: "122", intAwayScore: "116", strStatus: "Q4" }
             ],
             "Ice Hockey": [
                 { strLeague: "NHL", strHomeTeam: "NY Rangers", strAwayTeam: "Boston Bruins", intHomeScore: "4", intAwayScore: "2", strStatus: "FT" }
-            ],
-            "Tennis": [
-                { strLeague: "ATP Masters", strHomeTeam: "Carlos Alcaraz", strAwayTeam: "Jannik Sinner", intHomeScore: "2", intAwayScore: "1", strStatus: "FT" }
-            ],
-            "Cricket": [
-                { strLeague: "T20 World Series", strHomeTeam: "India", strAwayTeam: "Australia", intHomeScore: "184/5", intAwayScore: "170/8", strStatus: "FT" }
             ]
         };
 
@@ -891,14 +663,12 @@
             const y = dateObj.getFullYear();
             const m = String(dateObj.getMonth() + 1).padStart(2, '0');
             const d = String(dateObj.getDate()).padStart(2, '0');
-            return `${y}-${m}-${d}`;
+            return `${y}${m}${d}`;
         }
 
         function updateMainDateHeader() {
             const dateStr = formatDateYYYYMMDD(mainCurrentDate);
             const todayStr = formatDateYYYYMMDD(new Date());
-            
-            document.getElementById('calendarDayNum').innerText = mainCurrentDate.getDate();
 
             if (dateStr === todayStr) {
                 document.getElementById('mainDateDisplay').innerText = "Today";
@@ -907,156 +677,137 @@
             }
         }
 
-        function renderMatchesArray(matches) {
+        // Multi-League Parallel Fetch Function
+        async function fetchLiveMainFeed() {
             const feedContainer = document.getElementById('mainMatchFeed');
-            if (!matches || matches.length === 0) {
-                feedContainer.innerHTML = `<div class="spinner-center">No scheduled matches for this date.</div>`;
+            feedContainer.innerHTML = `<div class="spinner-center">Updating live feeds across global leagues...</div>`;
+
+            const dateFormatted = formatDateYYYYMMDD(mainCurrentDate);
+            const leagues = espnLeagueEndpoints[currentSport] || ["soccer/eng.1"];
+
+            try {
+                // Fetch all leagues in parallel
+                const fetchPromises = leagues.map(league => 
+                    fetch(`https://site.api.espn.com/apis/site/v2/sports/${league}/scoreboard?dates=${dateFormatted}`)
+                        .then(res => res.json())
+                        .catch(() => null)
+                );
+
+                const results = await Promise.all(fetchPromises);
+                let combinedEvents = [];
+
+                results.forEach(data => {
+                    if (data && data.events) {
+                        data.events.forEach(evt => {
+                            const comp = evt.competitions[0];
+                            const home = comp.competitors.find(c => c.homeAway === 'home');
+                            const away = comp.competitors.find(c => c.homeAway === 'away');
+                            
+                            combinedEvents.push({
+                                strLeague: data.leagues[0]?.name || currentSport,
+                                strHomeTeam: home?.team?.name || "Home",
+                                strAwayTeam: away?.team?.name || "Away",
+                                intHomeScore: home?.score !== undefined ? home.score : "-",
+                                intAwayScore: away?.score !== undefined ? away.score : "-",
+                                strStatus: evt.status?.type?.shortDetail || "Scheduled",
+                                isLive: evt.status?.type?.state === "in"
+                            });
+                        });
+                    }
+                });
+
+                // Apply Filters
+                if (isLiveOnlyFilter) {
+                    combinedEvents = combinedEvents.filter(e => e.isLive || e.strStatus.includes("'"));
+                }
+
+                if (activeQueryFilter) {
+                    const q = activeQueryFilter.toLowerCase();
+                    combinedEvents = combinedEvents.filter(e => 
+                        e.strHomeTeam.toLowerCase().includes(q) || 
+                        e.strAwayTeam.toLowerCase().includes(q) || 
+                        e.strLeague.toLowerCase().includes(q)
+                    );
+                }
+
+                if (combinedEvents.length > 0) {
+                    renderGroupedFeed(combinedEvents);
+                } else {
+                    renderGroupedFeed(fallbackDatabase[currentSport] || []);
+                }
+
+            } catch (err) {
+                renderGroupedFeed(fallbackDatabase[currentSport] || []);
+            }
+        }
+
+        function renderGroupedFeed(events) {
+            const feedContainer = document.getElementById('mainMatchFeed');
+            if (!events || events.length === 0) {
+                feedContainer.innerHTML = `<div class="spinner-center">No fixtures found for this selection.</div>`;
                 return;
             }
 
-            feedContainer.innerHTML = matches.map(m => {
-                const homeScore = m.intHomeScore !== null && m.intHomeScore !== undefined ? m.intHomeScore : "-";
-                const awayScore = m.intAwayScore !== null && m.intAwayScore !== undefined ? m.intAwayScore : "-";
-                const statusText = m.strStatus || m.strTime || "Scheduled";
+            // Group Events by League
+            const grouped = {};
+            events.forEach(evt => {
+                const league = evt.strLeague || "General Fixtures";
+                if (!grouped[league]) grouped[league] = [];
+                grouped[league].push(evt);
+            });
 
-                return `
-                    <div class="match-card">
-                        <div class="match-header-row">
-                            <span>${m.strLeague || currentSport}</span>
-                            <span style="color:var(--accent-green);">${statusText}</span>
+            let html = "";
+            for (const league in grouped) {
+                const list = grouped[league];
+                html += `
+                    <div class="league-group">
+                        <div class="league-header">
+                            <span>${league}</span>
+                            <span class="league-count">${list.length}</span>
                         </div>
-                        <div class="team-row">
-                            <span>${m.strHomeTeam}</span>
-                            <span class="score-box">${homeScore}</span>
-                        </div>
-                        <div class="team-row">
-                            <span>${m.strAwayTeam}</span>
-                            <span class="score-box">${awayScore}</span>
-                        </div>
+                        ${list.map(m => `
+                            <div class="match-card">
+                                <div class="match-status-row">
+                                    <span class="${m.isLive ? 'is-live' : ''}">${m.isLive ? '● LIVE ' : ''}${m.strStatus}</span>
+                                </div>
+                                <div class="team-row">
+                                    <span>${m.strHomeTeam}</span>
+                                    <span class="score-box">${m.intHomeScore}</span>
+                                </div>
+                                <div class="team-row">
+                                    <span>${m.strAwayTeam}</span>
+                                    <span class="score-box">${m.intAwayScore}</span>
+                                </div>
+                            </div>
+                        `).join('')}
                     </div>
                 `;
-            }).join('');
-        }
-
-        // Fetch Matches Using Free Open Public API
-        async function fetchLiveMainFeed() {
-            const feedContainer = document.getElementById('mainMatchFeed');
-            feedContainer.innerHTML = `<div class="spinner-center">Updating live scores...</div>`;
-            
-            const formattedDate = formatDateYYYYMMDD(mainCurrentDate);
-            // Public CORS-Friendly Open API Endpoint
-            const apiUrl = `https://corsproxy.io/?${encodeURIComponent(`https://www.thesportsdb.com/api/v1/json/3/eventsday.php?d=${formattedDate}&s=${encodeURIComponent(currentSport)}`)}`;
-
-            try {
-                const response = await fetch(apiUrl);
-                const data = await response.json();
-
-                if (data && data.events && data.events.length > 0) {
-                    let matches = data.events;
-                    if (isLiveOnlyFilter) {
-                        matches = matches.filter(m => m.strStatus === "In Progress" || m.strStatus === "HT" || m.strStatus === "1H" || m.strStatus === "2H");
-                    }
-                    renderMatchesArray(matches);
-                } else {
-                    renderMatchesArray(localMatchesFallback[currentSport] || []);
-                }
-            } catch (err) {
-                renderMatchesArray(localMatchesFallback[currentSport] || []);
             }
+
+            feedContainer.innerHTML = html;
         }
 
         // Predictions Generator
-        async function fetchLivePredictionsByOffset(offset) {
+        function fetchLivePredictionsByOffset(offset) {
             updatePredDateLabel();
             const container = document.getElementById('predictionsContainer');
-            container.innerHTML = `<div class="spinner-center">Scanning global match stats...</div>`;
+            
+            const predictionsData = [
+                { league: "Premier League", match: "Arsenal vs Chelsea", tip: "Arsenal Win & Over 1.5 Goals", odds: "1.75", status: offset < 0 ? "win" : "pending" },
+                { league: "La Liga", match: "Real Madrid vs Barcelona", tip: "Both Teams To Score", odds: "1.62", status: offset < 0 ? "win" : "pending" },
+                { league: "Serie A", match: "Inter Milan vs Juventus", tip: "Inter Milan Handicap (-0.5)", odds: "1.85", status: offset < 0 ? "loss" : "pending" }
+            ];
 
-            const targetDate = new Date();
-            targetDate.setDate(targetDate.getDate() + offset);
-            const dateStr = formatDateYYYYMMDD(targetDate);
-
-            const apiUrl = `https://corsproxy.io/?${encodeURIComponent(`https://www.thesportsdb.com/api/v1/json/3/eventsday.php?d=${dateStr}&s=Soccer`)}`;
-
-            try {
-                const response = await fetch(apiUrl);
-                const data = await response.json();
-
-                if (data && data.events && data.events.length > 0) {
-                    const events = data.events.slice(0, 5);
-                    container.innerHTML = events.map(m => {
-                        let statusClass = "status-pending";
-                        let statusLabel = "⌛ Pending";
-                        let pick = "Over 1.5 Goals";
-                        let odds = (1.50 + Math.random() * 0.4).toFixed(2);
-
-                        if (m.intHomeScore !== null && m.intAwayScore !== null) {
-                            const totalGoals = parseInt(m.intHomeScore) + parseInt(m.intAwayScore);
-                            if (totalGoals >= 2) {
-                                statusClass = "status-win";
-                                statusLabel = "✓ Win";
-                            } else {
-                                statusClass = "status-loss";
-                                statusLabel = "✗ Loss";
-                            }
-                        }
-
-                        return `
-                            <div class="prediction-card">
-                                <div class="match-header-row">
-                                    <span class="match-league">${m.strLeague || "Football"}</span>
-                                    <span class="status-badge ${statusClass}">${statusLabel}</span>
-                                </div>
-                                <div class="match-teams">
-                                    <span>${m.strHomeTeam} vs ${m.strAwayTeam}</span>
-                                    <span style="color:var(--accent-green);">@ ${odds}</span>
-                                </div>
-                                <div class="pred-meta-row">
-                                    <span class="tip-badge">Pick: ${pick}</span>
-                                </div>
-                                <div class="match-reason">📊 <strong>Analysis:</strong> Match query calculated using league form and goal trends for ${m.strHomeTeam}.</div>
-                            </div>
-                        `;
-                    }).join('');
-                } else {
-                    renderMultiDatePredictions(offset);
-                }
-            } catch (err) {
-                renderMultiDatePredictions(offset);
-            }
-        }
-
-        function renderMultiDatePredictions(offset) {
-            const container = document.getElementById('predictionsContainer');
-            const list = multiDatePredictionsMap[offset.toString()] || multiDatePredictionsMap["0"];
-
-            container.innerHTML = list.map(p => {
-                let badgeClass = "status-pending";
-                let badgeText = "⌛ Pending";
-                if (p.status === "win") {
-                    badgeClass = "status-win";
-                    badgeText = "✓ Win";
-                } else if (p.status === "loss") {
-                    badgeClass = "status-loss";
-                    badgeText = "✗ Loss";
-                }
-
-                return `
-                    <div class="prediction-card">
-                        <div class="match-header-row">
-                            <span class="match-league">${p.league}</span>
-                            <span class="status-badge ${badgeClass}">${badgeText}</span>
-                        </div>
-                        <div class="match-teams">
-                            <span>${p.teams}</span>
-                            <span style="color:var(--accent-green);">@ ${p.odds}</span>
-                        </div>
-                        <div class="pred-meta-row">
-                            <span class="tip-badge">Pick: ${p.pick}</span>
-                        </div>
-                        <div class="match-reason">📊 <strong>Analysis:</strong> ${p.analysis}</div>
+            container.innerHTML = predictionsData.map(p => `
+                <div class="prediction-card">
+                    <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:700; color:var(--subtext-color);">
+                        <span>${p.league}</span>
+                        <span class="status-badge status-${p.status}">${p.status}</span>
                     </div>
-                `;
-            }).join('');
+                    <div style="font-weight:700; margin:6px 0; color:var(--text-color);">${p.match}</div>
+                    <div style="font-size:12px; font-weight:700; color:var(--accent-green);">Pick: ${p.tip} @ ${p.odds}</div>
+                </div>
+            `).join('');
         }
 
         function updatePredDateLabel() {
@@ -1071,14 +822,22 @@
             }
         }
 
-        // Live Filter Button Toggle
+        // Event Handlers
+        searchToggle.addEventListener('click', () => {
+            searchBarContainer.classList.toggle('active');
+        });
+
+        searchInput.addEventListener('input', (e) => {
+            activeQueryFilter = e.target.value.trim();
+            fetchLiveMainFeed();
+        });
+
         document.getElementById('btnLiveFilter').addEventListener('click', (e) => {
             isLiveOnlyFilter = !isLiveOnlyFilter;
             e.currentTarget.classList.toggle('active-live', isLiveOnlyFilter);
             fetchLiveMainFeed();
         });
 
-        // Date Controls Main Feed
         document.getElementById('mainPrevDate').addEventListener('click', () => {
             mainCurrentDate.setDate(mainCurrentDate.getDate() - 1);
             updateMainDateHeader();
@@ -1091,7 +850,6 @@
             fetchLiveMainFeed();
         });
 
-        // Predictions Date Controls
         document.getElementById('predPrevDate').addEventListener('click', () => {
             predCurrentOffset--;
             fetchLivePredictionsByOffset(predCurrentOffset);
@@ -1108,36 +866,15 @@
             openModal(modalPredictions);
         });
 
-        // Menu and Navigation
-        function goHome() {
-            mainCurrentDate = new Date();
-            updateMainDateHeader();
-            fetchLiveMainFeed();
-            closeMenu();
-            closeAllModals();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        homeBtns.forEach(btn => btn.addEventListener('click', goHome));
-
-        function applyTheme(theme) {
-            if (theme === 'white') document.body.classList.add('light-theme');
-            else document.body.classList.remove('light-theme');
-        }
-
-        themeSelect.addEventListener('change', (e) => applyTheme(e.target.value));
-
         function openMenu() {
             sideMenu.classList.add('open');
             overlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
         }
 
         function closeMenu() {
             sideMenu.classList.remove('open');
             if (!document.querySelector('.modal.active')) {
                 overlay.classList.remove('active');
-                document.body.style.overflow = '';
             }
         }
 
@@ -1149,14 +886,12 @@
             setTimeout(() => {
                 modal.classList.add('active');
                 overlay.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }, 150);
+            }, 100);
         }
 
         function closeAllModals() {
             allModals.forEach(m => m.classList.remove('active'));
             overlay.classList.remove('active');
-            document.body.style.overflow = '';
         }
 
         overlay.addEventListener('click', () => {
@@ -1165,35 +900,6 @@
         });
 
         modalCloses.forEach(btn => btn.addEventListener('click', closeAllModals));
-
-        function renderRecentlyViewed() {
-            const container = document.getElementById('recentListContainer');
-            if (recentItems.length === 0) {
-                container.innerHTML = '<li style="text-align: center; color: var(--subtext-color); padding: 20px 0;">No recently viewed items</li>';
-                return;
-            }
-
-            container.innerHTML = recentItems.map(item => `
-                <li class="recent-item">
-                    <div>
-                        <div style="font-weight:600; color:var(--text-color);">${item.title}</div>
-                        <div style="font-size:11px; color:var(--subtext-color);">${item.time}</div>
-                    </div>
-                </li>
-            `).join('');
-        }
-
-        document.getElementById('clearRecentBtn').addEventListener('click', () => {
-            recentItems = [];
-            renderRecentlyViewed();
-        });
-
-        btnRecentlyViewed.addEventListener('click', () => {
-            renderRecentlyViewed();
-            openModal(modalRecentlyViewed);
-        });
-
-        btnSetting.addEventListener('click', () => openModal(modalSettings));
         btnPrivacy.addEventListener('click', () => openModal(modalPrivacy));
 
         document.querySelectorAll('.sport-chip, .sport-item').forEach(btn => {
@@ -1205,12 +911,6 @@
                     if (c.getAttribute('data-sport') === sport || c.innerText.trim() === sport) c.classList.add('active');
                     else c.classList.remove('active');
                 });
-
-                recentItems.unshift({
-                    title: `${sport} Feed View`,
-                    time: "Just now"
-                });
-                if (recentItems.length > 6) recentItems.pop();
 
                 fetchLiveMainFeed();
                 closeMenu();
