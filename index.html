@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goal™ - Live Sports Scores & Predictions</title>
+    <title>Goal™ - Global Live Sports Scores & Predictions</title>
     <style>
         :root {
             --bg-color: #0f0f0f;
@@ -73,7 +73,7 @@
             padding-bottom: 20px;
         }
 
-        /* Header Bar */
+        /* Top Navigation */
         .top-bar {
             display: flex;
             align-items: center;
@@ -256,6 +256,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 8px;
         }
 
         .league-count {
@@ -548,7 +550,7 @@
 
         <!-- Live Feed Container -->
         <div class="feed-container" id="mainMatchFeed">
-            <div class="spinner-center">Loading live feeds across global leagues...</div>
+            <div class="spinner-center">Loading live global sports feed...</div>
         </div>
     </div>
 
@@ -596,7 +598,7 @@
         </div>
         <div class="modal-body">
             <p><strong>Goal™ Privacy Policy</strong></p><br>
-            <p>1. <strong>Aggregated Sports Feeds:</strong> Live scores and fixtures are queried directly from keyless public endpoints.</p><br>
+            <p>1. <strong>Master Endpoint Feeds:</strong> All matches are parsed from public, keyless scoreboards across global sports leagues.</p><br>
             <p>2. <strong>Zero Personal Tracking:</strong> Your settings stay completely private in your browser's local cache.</p>
         </div>
     </div>
@@ -628,35 +630,13 @@
         let isLiveOnlyFilter = false;
         let activeQueryFilter = "";
 
-        // Endpoint Maps for Parallel Fetching across Top Leagues
-        const espnLeagueEndpoints = {
-            "Soccer": [
-                "soccer/eng.1", "soccer/esp.1", "soccer/ita.1", 
-                "soccer/ger.1", "soccer/fra.1", "soccer/uefa.champions", "soccer/usa.1"
-            ],
-            "Basketball": ["basketball/nba", "basketball/mens-college-basketball"],
+        // Master Endpoint Queries for Max League Coverage
+        const masterSportEndpoints = {
+            "Soccer": ["soccer/all"],
+            "Basketball": ["basketball/nba", "basketball/mens-college-basketball", "basketball/wnba"],
             "Ice Hockey": ["hockey/nhl"],
             "Tennis": ["tennis/atp", "tennis/wta"],
-            "Cricket": ["cricket/icc.t20worldcup"]
-        };
-
-        // Fallback Database to Ensure Content
-        const fallbackDatabase = {
-            "Soccer": [
-                { strLeague: "Premier League", strHomeTeam: "Arsenal", strAwayTeam: "Chelsea", intHomeScore: "2", intAwayScore: "1", strStatus: "FT" },
-                { strLeague: "Premier League", strHomeTeam: "Liverpool", strAwayTeam: "Manchester City", intHomeScore: "1", intAwayScore: "1", strStatus: "82'" },
-                { strLeague: "La Liga", strHomeTeam: "Real Madrid", strAwayTeam: "Barcelona", intHomeScore: "3", intAwayScore: "2", strStatus: "FT" },
-                { strLeague: "La Liga", strHomeTeam: "Atletico Madrid", strAwayTeam: "Sevilla", intHomeScore: "1", intAwayScore: "0", strStatus: "45'" },
-                { strLeague: "Serie A", strHomeTeam: "Inter Milan", strAwayTeam: "AC Milan", intHomeScore: "2", intAwayScore: "2", strStatus: "FT" },
-                { strLeague: "Bundesliga", strHomeTeam: "Bayern Munich", strAwayTeam: "Dortmund", intHomeScore: "4", intAwayScore: "1", strStatus: "FT" }
-            ],
-            "Basketball": [
-                { strLeague: "NBA", strHomeTeam: "Boston Celtics", strAwayTeam: "LA Lakers", intHomeScore: "114", intAwayScore: "108", strStatus: "FT" },
-                { strLeague: "NBA", strHomeTeam: "Golden State Warriors", strAwayTeam: "Phoenix Suns", intHomeScore: "122", intAwayScore: "116", strStatus: "Q4" }
-            ],
-            "Ice Hockey": [
-                { strLeague: "NHL", strHomeTeam: "NY Rangers", strAwayTeam: "Boston Bruins", intHomeScore: "4", intAwayScore: "2", strStatus: "FT" }
-            ]
+            "Cricket": ["cricket/icc.t20worldcup", "cricket/ipl"]
         };
 
         function formatDateYYYYMMDD(dateObj) {
@@ -677,18 +657,17 @@
             }
         }
 
-        // Multi-League Parallel Fetch Function
+        // Fetch Global Feeds Across 100+ Leagues simultaneously
         async function fetchLiveMainFeed() {
             const feedContainer = document.getElementById('mainMatchFeed');
-            feedContainer.innerHTML = `<div class="spinner-center">Updating live feeds across global leagues...</div>`;
+            feedContainer.innerHTML = `<div class="spinner-center">Loading global live matches...</div>`;
 
             const dateFormatted = formatDateYYYYMMDD(mainCurrentDate);
-            const leagues = espnLeagueEndpoints[currentSport] || ["soccer/eng.1"];
+            const endpoints = masterSportEndpoints[currentSport] || ["soccer/all"];
 
             try {
-                // Fetch all leagues in parallel
-                const fetchPromises = leagues.map(league => 
-                    fetch(`https://site.api.espn.com/apis/site/v2/sports/${league}/scoreboard?dates=${dateFormatted}`)
+                const fetchPromises = endpoints.map(ep => 
+                    fetch(`https://site.api.espn.com/apis/site/v2/sports/${ep}/scoreboard?dates=${dateFormatted}&limit=500`)
                         .then(res => res.json())
                         .catch(() => null)
                 );
@@ -704,9 +683,9 @@
                             const away = comp.competitors.find(c => c.homeAway === 'away');
                             
                             combinedEvents.push({
-                                strLeague: data.leagues[0]?.name || currentSport,
-                                strHomeTeam: home?.team?.name || "Home",
-                                strAwayTeam: away?.team?.name || "Away",
+                                strLeague: evt.season?.slug?.toUpperCase() || comp.league?.name || data.leagues[0]?.name || currentSport,
+                                strHomeTeam: home?.team?.displayName || home?.team?.name || "Home",
+                                strAwayTeam: away?.team?.displayName || away?.team?.name || "Away",
                                 intHomeScore: home?.score !== undefined ? home.score : "-",
                                 intAwayScore: away?.score !== undefined ? away.score : "-",
                                 strStatus: evt.status?.type?.shortDetail || "Scheduled",
@@ -733,25 +712,21 @@
                 if (combinedEvents.length > 0) {
                     renderGroupedFeed(combinedEvents);
                 } else {
-                    renderGroupedFeed(fallbackDatabase[currentSport] || []);
+                    feedContainer.innerHTML = `<div class="spinner-center">No scheduled ${currentSport} matches on this date.</div>`;
                 }
 
             } catch (err) {
-                renderGroupedFeed(fallbackDatabase[currentSport] || []);
+                feedContainer.innerHTML = `<div class="spinner-center">Error loading scores. Please try refreshing.</div>`;
             }
         }
 
         function renderGroupedFeed(events) {
             const feedContainer = document.getElementById('mainMatchFeed');
-            if (!events || events.length === 0) {
-                feedContainer.innerHTML = `<div class="spinner-center">No fixtures found for this selection.</div>`;
-                return;
-            }
-
-            // Group Events by League
+            
+            // Group Events by League Name
             const grouped = {};
             events.forEach(evt => {
-                const league = evt.strLeague || "General Fixtures";
+                const league = evt.strLeague || "General Leagues";
                 if (!grouped[league]) grouped[league] = [];
                 grouped[league].push(evt);
             });
