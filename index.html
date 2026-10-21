@@ -433,12 +433,6 @@
             text-align: center;
         }
 
-        .menu-divider {
-            height: 1px;
-            background-color: var(--border-color);
-            margin: 6px 0;
-        }
-
         /* Modals */
         .modal {
             position: fixed;
@@ -518,7 +512,6 @@
             margin-bottom: 10px;
         }
 
-        /* Status Badge Base Styling */
         .status-badge {
             display: inline-flex;
             align-items: center;
@@ -532,23 +525,9 @@
             user-select: none;
         }
 
-        .status-win {
-            background-color: rgba(16, 185, 129, 0.15);
-            color: var(--accent-green);
-            border: 1px solid var(--accent-green);
-        }
-
-        .status-loss {
-            background-color: rgba(239, 68, 68, 0.15);
-            color: var(--accent-red);
-            border: 1px solid var(--accent-red);
-        }
-
-        .status-pending {
-            background-color: rgba(245, 158, 11, 0.15);
-            color: var(--accent-amber);
-            border: 1px solid var(--accent-amber);
-        }
+        .status-win { background-color: rgba(16, 185, 129, 0.15); color: var(--accent-green); border: 1px solid var(--accent-green); }
+        .status-loss { background-color: rgba(239, 68, 68, 0.15); color: var(--accent-red); border: 1px solid var(--accent-red); }
+        .status-pending { background-color: rgba(245, 158, 11, 0.15); color: var(--accent-amber); border: 1px solid var(--accent-amber); }
 
         .pred-pick-row {
             margin: 6px 0;
@@ -632,7 +611,7 @@
     <!-- Overlay -->
     <div class="overlay" id="overlay"></div>
 
-    <!-- Side Menu Drawer -->
+    <!-- Side Menu Drawer (Only AI Predictions Left) -->
     <aside class="side-menu" id="sideMenu">
         <div class="menu-header">
             <div class="brand-logo home-btn">Wins1<span>TM</span></div>
@@ -640,14 +619,6 @@
         </div>
         <ul class="menu-list">
             <li class="menu-item" id="btnPredictions"><span class="icon">🔮</span> AI Predictions</li>
-            <div class="menu-divider"></div>
-            <li class="menu-item sport-item" data-sport="Soccer"><span class="icon">⚽</span> Football</li>
-            <li class="menu-item sport-item" data-sport="Basketball"><span class="icon">🏀</span> Basketball</li>
-            <li class="menu-item sport-item" data-sport="Ice Hockey"><span class="icon">🏒</span> Hockey</li>
-            <li class="menu-item sport-item" data-sport="Tennis"><span class="icon">🎾</span> Tennis</li>
-            <li class="menu-item sport-item" data-sport="Cricket"><span class="icon">🏏</span> Cricket</li>
-            <div class="menu-divider"></div>
-            <li class="menu-item" id="btnPrivacy"><span class="icon">🔒</span> Privacy Policy</li>
         </ul>
     </aside>
 
@@ -665,19 +636,6 @@
         <div class="modal-body" id="predictionsContainer"></div>
     </div>
 
-    <!-- Privacy Policy Modal -->
-    <div class="modal" id="modalPrivacy">
-        <div class="modal-header">
-            <div class="modal-title">🔒 Privacy Policy</div>
-            <button class="close-btn modal-close">&times;</button>
-        </div>
-        <div class="modal-body">
-            <p><strong>Wins1™ Privacy Policy</strong></p><br>
-            <p>1. <strong>Master Feeds:</strong> Live scores and predictions are generated dynamically using keyless public endpoints.</p><br>
-            <p>2. <strong>Data Privacy:</strong> User selections and view preferences remain saved locally inside your browser cache.</p>
-        </div>
-    </div>
-
     <!-- JavaScript Core -->
     <script>
         const menuToggle = document.getElementById('menuToggle');
@@ -689,12 +647,9 @@
         const searchInput = document.getElementById('searchInput');
 
         const btnPredictions = document.getElementById('btnPredictions');
-        const btnPrivacy = document.getElementById('btnPrivacy');
-
         const modalPredictions = document.getElementById('modalPredictions');
-        const modalPrivacy = document.getElementById('modalPrivacy');
 
-        const allModals = [modalPredictions, modalPrivacy];
+        const allModals = [modalPredictions];
         const modalCloses = document.querySelectorAll('.modal-close');
         const homeBtns = document.querySelectorAll('.home-btn');
 
@@ -745,7 +700,6 @@
 
         async function fetchLiveMainFeed() {
             const feedContainer = document.getElementById('mainMatchFeed');
-            
             const dateFormatted = formatDateYYYYMMDD(mainCurrentDate);
             const endpoints = masterSportEndpoints[currentSport] || ["soccer/all"];
 
@@ -990,8 +944,6 @@
             fetchLivePredictionsByOffset(0);
             openModal(modalPredictions);
         });
-
-        btnPrivacy.addEventListener('click', () => openModal(modalPrivacy));
 
         function openMenu() {
             sideMenu.classList.add('open');
