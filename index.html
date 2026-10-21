@@ -54,7 +54,7 @@
             padding-bottom: 20px;
         }
 
-        /* Clean Top Navigation Bar */
+        /* Top Navigation Bar */
         .top-bar {
             display: flex;
             align-items: center;
@@ -99,34 +99,65 @@
             vertical-align: super;
         }
 
-        /* Feed List Structure */
+        /* Homepage Calendar Bar */
+        .calendar-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background-color: var(--bg-color);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .calendar-bar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .date-chip {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-width: 62px;
+            padding: 6px 12px;
+            border-radius: 12px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .date-chip.active {
+            background-color: var(--accent-green);
+            border-color: var(--accent-green);
+        }
+
+        .date-chip.active .day-name,
+        .date-chip.active .day-number {
+            color: #000000;
+            font-weight: 800;
+        }
+
+        .day-name {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--subtext-color);
+            text-transform: uppercase;
+        }
+
+        .day-number {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--text-color);
+            margin-top: 2px;
+        }
+
+        /* Main Feed Container */
         .feed-container {
             padding: 16px;
-        }
-
-        .league-group {
-            margin-bottom: 16px;
-        }
-
-        .league-header {
-            font-size: 12px;
-            font-weight: 800;
-            text-transform: uppercase;
-            color: var(--subtext-color);
-            padding: 8px 6px;
-            letter-spacing: 0.5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: 8px;
-        }
-
-        .league-count {
-            background-color: var(--btn-bg);
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-size: 10px;
         }
 
         .match-card {
@@ -146,13 +177,6 @@
             font-weight: 800;
             margin-bottom: 8px;
             color: var(--subtext-color);
-        }
-
-        .match-status-row .is-live {
-            color: var(--accent-red);
-            display: flex;
-            align-items: center;
-            gap: 4px;
         }
 
         .team-row {
@@ -204,7 +228,7 @@
             color: var(--accent-green);
         }
 
-        /* Status Badge Styling */
+        /* Status Badges */
         .status-badge {
             display: inline-flex;
             align-items: center;
@@ -318,77 +342,6 @@
             text-align: center;
         }
 
-        /* Modals */
-        .modal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.95);
-            width: 92%;
-            max-width: 480px;
-            background-color: var(--modal-bg);
-            border: 1px solid var(--modal-border);
-            border-radius: 14px;
-            padding: 18px;
-            z-index: 200;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.2s ease-in-out;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-        }
-
-        .modal.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
-            margin-bottom: 12px;
-        }
-
-        .modal-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--text-color);
-        }
-
-        .modal-body {
-            max-height: 65vh;
-            overflow-y: auto;
-            font-size: 13px;
-            color: var(--text-color);
-        }
-
-        .pred-calendar-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 6px 12px;
-            margin-bottom: 10px;
-        }
-
-        .pred-date-label {
-            font-weight: 700;
-            font-size: 13px;
-        }
-
-        .pred-nav-btn {
-            background: none;
-            border: none;
-            color: var(--text-color);
-            cursor: pointer;
-            font-weight: 700;
-        }
-
         .spinner-center {
             text-align: center;
             padding: 30px;
@@ -400,7 +353,7 @@
 <body>
 
     <div class="container">
-        <!-- Top Navigation -->
+        <!-- Top Bar -->
         <header class="top-bar">
             <button class="icon-btn" id="menuToggle" aria-label="Open Menu">
                 <svg width="18" height="12" viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -412,19 +365,22 @@
             <div class="brand-logo home-btn">
                 Wins1<span>TM</span>
             </div>
-            <div style="width: 40px;"></div> <!-- Spacer to align logo in center -->
+            <div style="width: 40px;"></div>
         </header>
 
-        <!-- Main Feed Container (Direct AI Predictions Display) -->
+        <!-- Homepage Calendar Strip -->
+        <div class="calendar-bar" id="homepageCalendar"></div>
+
+        <!-- Main Feed Container -->
         <div class="feed-container" id="mainMatchFeed">
-            <div class="spinner-center">Loading Wins1™ AI predictions...</div>
+            <div class="spinner-center">Loading Wins1™ predictions...</div>
         </div>
     </div>
 
     <!-- Background Overlay -->
     <div class="overlay" id="overlay"></div>
 
-    <!-- Side Menu Drawer (Only AI Predictions) -->
+    <!-- Side Menu Drawer -->
     <aside class="side-menu" id="sideMenu">
         <div class="menu-header">
             <div class="brand-logo home-btn">Wins1<span>TM</span></div>
@@ -435,34 +391,15 @@
         </ul>
     </aside>
 
-    <!-- Predictions Modal -->
-    <div class="modal" id="modalPredictions">
-        <div class="modal-header">
-            <div class="modal-title">🔮 Wins1™ AI Predictions Calendar</div>
-            <button class="close-btn modal-close">&times;</button>
-        </div>
-        <div class="pred-calendar-bar">
-            <button class="pred-nav-btn" id="predPrevDate">◀</button>
-            <div class="pred-date-label" id="predDateDisplay">Today</div>
-            <button class="pred-nav-btn" id="predNextDate">▶</button>
-        </div>
-        <div class="modal-body" id="predictionsContainer"></div>
-    </div>
-
-    <!-- JavaScript Execution Engine -->
+    <!-- JavaScript Engine -->
     <script>
         const menuToggle = document.getElementById('menuToggle');
         const menuClose = document.getElementById('menuClose');
         const sideMenu = document.getElementById('sideMenu');
         const overlay = document.getElementById('overlay');
+        const calendarBar = document.getElementById('homepageCalendar');
 
-        const btnPredictions = document.getElementById('btnPredictions');
-        const modalPredictions = document.getElementById('modalPredictions');
-
-        const allModals = [modalPredictions];
-        const modalCloses = document.querySelectorAll('.modal-close');
-
-        let predCurrentOffset = 0;
+        let selectedDateOffset = 0;
 
         function formatDateYYYYMMDD(dateObj) {
             const y = dateObj.getFullYear();
@@ -471,17 +408,53 @@
             return `${y}${m}${d}`;
         }
 
-        async function fetchMainAIPredictions() {
+        // Render Homepage Date Strip (-2 days to +4 days)
+        function renderCalendarStrip() {
+            let html = "";
+            for (let offset = -2; offset <= 4; offset++) {
+                const date = new Date();
+                date.setDate(date.getDate() + offset);
+
+                let dayName = date.toLocaleDateString('en-US', { weekday: 'short' });
+                let dayNumber = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+                if (offset === 0) dayName = "Today";
+                else if (offset === -1) dayName = "Yest";
+                else if (offset === 1) dayName = "Tomm";
+
+                const isActive = offset === selectedDateOffset ? "active" : "";
+
+                html += `
+                    <div class="date-chip ${isActive}" onclick="selectDate(${offset})">
+                        <span class="day-name">${dayName}</span>
+                        <span class="day-number">${dayNumber}</span>
+                    </div>
+                `;
+            }
+            calendarBar.innerHTML = html;
+        }
+
+        function selectDate(offset) {
+            selectedDateOffset = offset;
+            renderCalendarStrip();
+            fetchMainAIPredictions(offset);
+        }
+
+        async function fetchMainAIPredictions(offset) {
             const feedContainer = document.getElementById('mainMatchFeed');
-            const todayStr = formatDateYYYYMMDD(new Date());
+            feedContainer.innerHTML = `<div class="spinner-center">Loading Wins1™ predictions...</div>`;
+
+            const targetDate = new Date();
+            targetDate.setDate(targetDate.getDate() + offset);
+            const dateStr = formatDateYYYYMMDD(targetDate);
 
             try {
-                const response = await fetch(`https://site.api.espn.com/apis/site/v2/sports/soccer/all/scoreboard?dates=${todayStr}&limit=50`);
+                const response = await fetch(`https://site.api.espn.com/apis/site/v2/sports/soccer/all/scoreboard?dates=${dateStr}&limit=50`);
                 const data = await response.json();
 
                 if (data && data.events && data.events.length > 0) {
                     let html = "";
-                    data.events.slice(0, 15).forEach(evt => {
+                    data.events.slice(0, 20).forEach(evt => {
                         const comp = evt.competitions[0];
                         const home = comp.competitors.find(c => c.homeAway === 'home');
                         const away = comp.competitors.find(c => c.homeAway === 'away');
@@ -544,99 +517,12 @@
                     });
                     feedContainer.innerHTML = html;
                 } else {
-                    feedContainer.innerHTML = `<div class="spinner-center">No AI prediction matches scheduled for today.</div>`;
+                    feedContainer.innerHTML = `<div class="spinner-center">No AI prediction matches scheduled for this date.</div>`;
                 }
             } catch (err) {
                 feedContainer.innerHTML = `<div class="spinner-center">Unable to load Wins1™ AI predictions.</div>`;
             }
         }
-
-        async function fetchModalPredictionsByOffset(offset) {
-            updatePredDateLabel();
-            const container = document.getElementById('predictionsContainer');
-            container.innerHTML = `<div class="spinner-center">Scanning global odds and AI metrics...</div>`;
-
-            const targetDate = new Date();
-            targetDate.setDate(targetDate.getDate() + offset);
-            const dateFormatted = formatDateYYYYMMDD(targetDate);
-
-            try {
-                const response = await fetch(`https://site.api.espn.com/apis/site/v2/sports/soccer/all/scoreboard?dates=${dateFormatted}&limit=50`);
-                const data = await response.json();
-
-                if (data && data.events && data.events.length > 0) {
-                    container.innerHTML = data.events.slice(0, 8).map(evt => {
-                        const comp = evt.competitions[0];
-                        const home = comp.competitors.find(c => c.homeAway === 'home');
-                        const away = comp.competitors.find(c => c.homeAway === 'away');
-                        
-                        const homeName = home?.team?.displayName || "Home Team";
-                        const awayName = away?.team?.displayName || "Away Team";
-                        const leagueName = comp.league?.name || data.leagues[0]?.name || "Global Football";
-                        
-                        const isFinished = evt.status?.type?.state === "post";
-                        const homeScore = parseInt(home?.score || 0);
-                        const awayScore = parseInt(away?.score || 0);
-                        const totalGoals = homeScore + awayScore;
-
-                        let isWin = totalGoals >= 2;
-                        let badgeClass = "status-pending";
-                        let badgeHtml = `⌛ PENDING`;
-
-                        if (isFinished) {
-                            badgeClass = isWin ? "status-win" : "status-loss";
-                            badgeHtml = isWin ? "✓ WIN" : "✕ LOSS";
-                        }
-
-                        return `
-                            <div class="match-card">
-                                <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:700; color:var(--subtext-color);">
-                                    <span>${leagueName}</span>
-                                    <span class="status-badge ${badgeClass}">${badgeHtml}</span>
-                                </div>
-                                <div style="font-weight:700; margin:6px 0; color:var(--text-color); font-size:14px;">
-                                    ${homeName} vs ${awayName}
-                                </div>
-                                <div class="pred-pick-row">Pick: Over 1.5 Goals @ 1.65</div>
-                                <div class="pred-reason">
-                                    📊 <strong>Wins1 AI Analysis:</strong> Calculated using live market odds and 10-match xG ratio for ${homeName}.
-                                </div>
-                            </div>
-                        `;
-                    }).join('');
-                }
-            } catch (err) {
-                container.innerHTML = `<div class="spinner-center">Unable to load calendar predictions.</div>`;
-            }
-        }
-
-        function updatePredDateLabel() {
-            const labelEl = document.getElementById('predDateDisplay');
-            if (predCurrentOffset === 0) labelEl.innerText = "Today";
-            else if (predCurrentOffset === -1) labelEl.innerText = "Yesterday";
-            else if (predCurrentOffset === 1) labelEl.innerText = "Tomorrow";
-            else {
-                const targetDate = new Date();
-                targetDate.setDate(targetDate.getDate() + predCurrentOffset);
-                labelEl.innerText = targetDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-            }
-        }
-
-        document.getElementById('predPrevDate').addEventListener('click', () => {
-            predCurrentOffset--;
-            fetchModalPredictionsByOffset(predCurrentOffset);
-        });
-
-        document.getElementById('predNextDate').addEventListener('click', () => {
-            predCurrentOffset++;
-            fetchModalPredictionsByOffset(predCurrentOffset);
-        });
-
-        btnPredictions.addEventListener('click', () => {
-            predCurrentOffset = 0;
-            fetchModalPredictionsByOffset(0);
-            openModal(modalPredictions);
-        });
 
         function openMenu() {
             sideMenu.classList.add('open');
@@ -645,36 +531,16 @@
 
         function closeMenu() {
             sideMenu.classList.remove('open');
-            if (!document.querySelector('.modal.active')) {
-                overlay.classList.remove('active');
-            }
+            overlay.classList.remove('active');
         }
 
         menuToggle.addEventListener('click', openMenu);
         menuClose.addEventListener('click', closeMenu);
+        overlay.addEventListener('click', closeMenu);
 
-        function openModal(modal) {
-            closeMenu();
-            setTimeout(() => {
-                modal.classList.add('active');
-                overlay.classList.add('active');
-            }, 100);
-        }
-
-        function closeAllModals() {
-            allModals.forEach(m => m.classList.remove('active'));
-            overlay.classList.remove('active');
-        }
-
-        overlay.addEventListener('click', () => {
-            closeMenu();
-            closeAllModals();
-        });
-
-        modalCloses.forEach(btn => btn.addEventListener('click', closeAllModals));
-
-        // Initial Start
-        fetchMainAIPredictions();
+        // App Start
+        renderCalendarStrip();
+        fetchMainAIPredictions(0);
     </script>
 </body>
 </html>
