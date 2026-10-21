@@ -434,6 +434,26 @@
         <div class="modal-body">
             <div class="setting-row">
                 <div>
+                    <div style="font-weight:700;">Match Notifications</div>
+                    <div style="font-size:11px; color:var(--subtext-color);">Receive updates on winning predictions</div>
+                </div>
+                <select id="notifSelect">
+                    <option value="enabled">Enabled</option>
+                    <option value="disabled">Disabled</option>
+                </select>
+            </div>
+            <div class="setting-row">
+                <div>
+                    <div style="font-weight:700;">Sound Effects</div>
+                    <div style="font-size:11px; color:var(--subtext-color);">Play sound on status changes</div>
+                </div>
+                <select id="soundSelect">
+                    <option value="off">Off</option>
+                    <option value="on">On</option>
+                </select>
+            </div>
+            <div class="setting-row">
+                <div>
                     <div style="font-weight:700;">Theme Mode</div>
                     <div style="font-size:11px; color:var(--subtext-color);">Dark layout preference</div>
                 </div>
@@ -452,7 +472,7 @@
         </div>
         <div class="modal-body">
             <p><strong>Wins1™ Privacy Policy</strong></p><br>
-            <p>1. <strong>Master Feeds:</strong> Live scores and predictions are generated dynamically using keyless public endpoints.</p><br>
+            <p>1. <strong>Master Feeds:</strong> Live scores and predictions are posted by admin.</p><br>
             <p>2. <strong>Data Privacy:</strong> User selections and view preferences remain saved locally inside your browser cache.</p>
         </div>
     </div>
